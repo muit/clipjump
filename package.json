@@ -1,0 +1,38 @@
+{
+  "name": "ClipJump",
+  "version": "0.0.1",
+  "description": "It's a secret.",
+  "contributors": [
+    "Miguel Fernandez <miguel_3c@hotmail.com>"
+  ],
+  "license": "GPL",
+  "main": "./bin/server.js",
+  "bin": {
+    "clip": "./bin/server.js"
+  },
+  "engines": {
+    "node": "0.10.31"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": "",
+    "email": "miguel_3c@hotmail.com"
+  },
+  "dependencies": {
+    "socket.io": "1.1.0"
+  },
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-jasmine": "*",
+    "gulp-util": "*"
+  },
+  "private": false,
+  "subdomain": "clipjump",
+  "scripts": {
+    "start": "node bin/server.js"
+  }
+}
