@@ -1,6 +1,13 @@
+/*****************************************************************************
+ ****                      Clip Engine for ThreeJs                        ****
+ *****************************************************************************
+ ****                                                                     ****
+ ****          @author Miguel Fernandez - muitxer - github.com/muit       ****
+ ****************************************************************************/
+
 if(typeof Utyl == "undefined") require("../source/utyl/utyl.js");
 
-/** Clip Module (Framework)
+/** Clip Module (Engine)
  * Main module. Contains all the engine system.
  * @type {Object}
  */
@@ -21,7 +28,9 @@ Clip = {
     },
     modules: {},
 };
-
+Clip.log("*************************************************");
+CLip.log("****      Clip Engine v"+Clip.version+"      ****");
+CLip.log("*************************************************");
 
 /** Graphic Model (API)
  * Control all the graphics

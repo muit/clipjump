@@ -1,3 +1,10 @@
+/*****************************************************************************
+ ****                      Clip Engine for ThreeJs                        ****
+ *****************************************************************************
+ ****                                                                     ****
+ ****          @author Miguel Fernandez - muitxer - github.com/muit       ****
+ ****************************************************************************/
+
 if(typeof Utyl == "undefined") require("../source/utyl/utyl.js");
 http = require("../source/serveMe/source/http_server.js");
 
