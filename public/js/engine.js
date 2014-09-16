@@ -29,20 +29,35 @@ Clip = {
     modules: {},
 };
 Clip.log("*************************************************");
-CLip.log("****      Clip Engine v"+Clip.version+"      ****");
-CLip.log("*************************************************");
+Clip.log("****      Clip Engine v"+Clip.version+"      ****");
+Clip.log("*************************************************");
 
 /** Graphic Model (API)
  * Control all the graphics
  * @type {Object}
  */
-Graphic = {};
-Graphic.start = function(){
+Graphic = function(config){
+    this.config = config;
     this.renderer = new THREE.WebGLRenderer();
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
 
-    return this;
+    var self = this;
+    window.onresize = this.resize;
+};
+
+Graphic.prototype.screen = {
+  height: 0,
+  width: 0,
+  element: undefined,
+};
+
+/** Resize Method
+ * Resize the view if needed and enabled
+ */
+Graphic.prototype.resize = function(){
+    if(this.config.resize)
+        this.reload(this.screen.element, this.config);
 };
 
 /**
@@ -50,56 +65,68 @@ Graphic.start = function(){
  * @param  {Object} element Dom element that will contain the game screen.
  * @param  {Object} options Options to define how to process the reload.
  */
-Graphic.reload = function(element, options){
+Graphic.prototype.reload = function(element, config){
     if(!element) throw new Error("Canvas element provided does not exist.");
 
-    this.Screen.element = element;
-    canvas.innerHTML = "";
+    this.screen.element = element;
+    element.innerHTML = "";
 
-    var side = 0;
-    if(canvas.clientHeight < canvas.clientWidth)
-        side = canvas.clientHeight;
-    else
-        side = canvas.clientWidth;
-
-    this.height = side;
-    this.width = side;
+    this.screen.height = element.clientHeight;
+    this.screen.width = element.clientWidth;
 
     this.renderer.setClearColor(0x777777);
     this.renderer.setSize(side, side);
 
     canvas.appendChild(this.renderer.domElement);
-    this.loadStats(options);
+    this.loadStats();
 };
 /**
  * Load canvas window.
  * @param  {Object} element Dom element that will contain the game screen.
  * @param  {Object} options Options to define how to process the load.
  */
-Graphic.load = Graphic.reload;
+Graphic.prototype.load = Graphic.prototype.reload;
 
-Graphic.Screen = {
-  height: 0,
-  width: 0,
-  element: undefined,
+Game.prototype.loadStats = function(){
+    if(!this.screen.element)
+        throw new Error("Canvas element does not exist.");
+
+    if(this.config.debug === true){
+        //Render stats
+        this.renderstats = new THREEx.RendererStats();
+        this.renderstats.domElement.style.position = 'absolute';
+        this.renderstats.domElement.style.left = '0px';
+        this.renderstats.domElement.style.bottom = '0px';
+
+        this.screen.element.appendChild( this.renderstats.domElement );
+
+        //FPS stats
+        this.stats = new Stats();
+        this.stats.domElement.style.position = 'absolute';
+        this.stats.domElement.style.right    = '0px';
+        this.stats.domElement.style.bottom   = '0px';
+
+        this.screen.element.appendChild( this.stats.domElement );
+    }
+    else{
+        //Fake stats adapters
+        this.stats = {
+            update: function(){}
+        };
+        this.renderstats = {
+            update: function(r){}
+        };
+    }
 };
-
-
-
-/** Animation Class
- * Control animation instances
- */
-Animation = function(){};
-
-Animation.prototype.update = function(diff){};
-Animation.prototype.render = function(diff){};
-Graphic.Animation = Animation;
 
 /**
  * Contains the z position of a component.
  * @param {String} name Name of the layout.
  */
 Layout = function(name, z){
+    if(typeof z != "number")
+        throw new Error("Z position must be a number");
+
     this.name = name;
     this.z = z;
 
@@ -108,20 +135,32 @@ Layout = function(name, z){
     else
         Clip.log("Couldn't create new Layout.");
 };
+
 Layout.createLayout = function(layoutCreated){
     (this.all = this.all || []).push(layoutCreated);
 };
+
+/** Animation Class
+ * Control animation instances
+ */
+Animation = function(component){this.component = component;};
+Animation.prototype.update = function(diff){};
+Animation.prototype.render = function(diff){};
+Graphic.Animation = Animation;
+
 
 /** Component Class
  * Father of everything
  * @param {Layout} layout Layout of the component to indicate the z-index.
  */
-Graphic.Component = function(layout){};
-Graphic.Component.prototype.update = function(diff){};
-Graphic.Component.prototype.render = function(diff){};
-Graphic.Component.prototype.position = new Vector3(0,0,0);
-Graphic.Component.prototype.rotation = new Vector3(0,0,0);
+Component = function(layout){
+    this.layout = layout;
+};
+Component.prototype.update = function(diff){};
+Component.prototype.render = function(diff){};
+Component.prototype.position = new Vector3(0,0,0);
+Component.prototype.rotation = new Vector3(0,0,0);
+Graphic.Component = Component;
 
 
-
-Clip.modules.Graphic = Graphic.start();
+Clip.modules.Graphic = Graphic;
