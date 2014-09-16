@@ -38,29 +38,32 @@ Clip.log("*************************************************");
  * @param {Object} config Contains the config of the engine
  */
 Controller = function(config){
-    this.graphic = new Clip.require("graphic")(config);
-    this.logic = new Clip.require("logic")(config);
+    this.graphic = new Clip.require("graphic")(this, config);
+    this.logic = new Clip.require("logic")(this, config);
+
+    this.entities = [];
+    this.objects = [];
 };
 Controller.prototype.addEntity = function(entity){
     if(!entity instanceof Clip.Entity)
         throw new Error("Need an Entity!");
-    this.entities = this.entities || [];
     this.entities.push(entity);
 };
 
 Controller.prototype.addObject = function(object){
-    if(!entity instanceof Clip.Object)
+    if(!object instanceof Clip.Object)
         throw new Error("Need an Object!");
-    this.objects = this.objects || [];
     this.entities.push(object);
 };
 
 
-/** Graphic Model (API)
+/** Graphic Class (API)
  * Control all the graphics
- * @type {Object}
+ * @param {Controller} controller Graphic controller.
+ * @param {Object}     config     Project config.
  */
-Graphic = function(config){
+Graphic = function(controller, config){
+    this.controller = controller;
     this.config = config;
     this.renderer = new THREE.WebGLRenderer();
     this.scene = new THREE.Scene();
@@ -101,7 +104,7 @@ Graphic.prototype.reload = function(element, config){
     this.renderer.setClearColor(0x777777);
     this.renderer.setSize(side, side);
 
-    canvas.appendChild(this.renderer.domElement);
+    this.screen.element.appendChild(this.renderer.domElement);
     this.loadStats();
 };
 
@@ -147,6 +150,27 @@ Graphic.prototype.loadStats = function(){
         };
     }
 };
+Graphic.prototype.loop = function(){
+    this.timer = new Timer(function(){
+
+    }, this.config.fps);
+};
+
+
+/** Logic Class (API)
+ * @param {Controller} controller Logic controller.
+ * @param {Object}     config     Project config.
+ */
+Logic = function(controller, config){
+    this.controller = controller;
+    this.config = config;
+};
+Logic.prototype.loop = function(){
+    this.timer = new Timer(function(){
+
+    }, this.config.fps);
+};
+
 
 /**
  * Contains the z position of a component.
@@ -183,14 +207,14 @@ Component.prototype.position = new Vector3(0,0,0);
 Component.prototype.rotation = new Vector3(0,0,0);
 Clip.Component = Component;
 
-Clip.Entity = function(mesh, layout){};
-Clip.Entity.defaultLayout = new Layout("defaultEntity", -7);
-Clip.Entity.inherits(Component);
+Clip.Component.Entity = function(mesh, layout){};
+Clip.Component.Entity.defaultLayout = new Layout("defaultEntity", -7);
+Clip.Component.Entity.inherits(Component);
 
-Clip.Object = function(mesh, layout){};
-Clip.Object.defaultLayout = new Layout("defaultObject", -3);
-Clip.Object.inherits(Component);
-Clip.Object.prototype.spawn = function(){};
+Clip.Component.Object = function(mesh, layout){};
+Clip.Component.Object.defaultLayout = new Layout("defaultObject", -3);
+Clip.Component.Object.inherits(Component);
+Clip.Component.Object.prototype.spawn = function(){};
 
 /** Animation Class
  * Control animation instances
@@ -198,8 +222,8 @@ Clip.Object.prototype.spawn = function(){};
 Animation = function(component){this.component = component;};
 Animation.prototype.update = function(diff){};
 Animation.prototype.render = function(diff){};
-Component.Animation = Animation;
+Clip.Animation = Animation;
 
 
-Clip.modules.component = Component;
+Clip.modules.logic = Logic;
 Clip.modules.graphic = Graphic;
