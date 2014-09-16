@@ -12,7 +12,7 @@ if(typeof Utyl == "undefined") require("../source/utyl/utyl.js");
  * @type {Object}
  */
 Clip = {
-    version: "0.0.01",
+    version: "0.0.02",
     require: function(moduleName){
         if (typeof moduleName == "string") {
             moduleName = String(moduleName).toLowerCase();
@@ -31,6 +31,30 @@ Clip = {
 Clip.log("*************************************************");
 Clip.log("****      Clip Engine v"+Clip.version+"      ****");
 Clip.log("*************************************************");
+
+
+/**
+ * Controller will take control of all the project components, including graphics, entities or objects.
+ * @param {Object} config Contains the config of the engine
+ */
+Controller = function(config){
+    this.graphic = new Clip.require("graphic")(config);
+    this.logic = new Clip.require("logic")(config);
+};
+Controller.prototype.addEntity = function(entity){
+    if(!entity instanceof Clip.Entity)
+        throw new Error("Need an Entity!");
+    this.entities = this.entities || [];
+    this.entities.push(entity);
+};
+
+Controller.prototype.addObject = function(object){
+    if(!entity instanceof Clip.Object)
+        throw new Error("Need an Object!");
+    this.objects = this.objects || [];
+    this.entities.push(object);
+};
+
 
 /** Graphic Model (API)
  * Control all the graphics
@@ -52,7 +76,7 @@ Graphic.prototype.screen = {
   element: undefined,
 };
 
-/** Resize Method
+/** resize Method
  * Resize the view if needed and enabled
  */
 Graphic.prototype.resize = function(){
@@ -80,6 +104,7 @@ Graphic.prototype.reload = function(element, config){
     canvas.appendChild(this.renderer.domElement);
     this.loadStats();
 };
+
 /**
  * Load canvas window.
  * @param  {Object} element Dom element that will contain the game screen.
@@ -87,7 +112,11 @@ Graphic.prototype.reload = function(element, config){
  */
 Graphic.prototype.load = Graphic.prototype.reload;
 
-Game.prototype.loadStats = function(){
+
+/** loadStats Method
+ * Load webgl stats if enabled
+ */
+Graphic.prototype.loadStats = function(){
     if(!this.screen.element)
         throw new Error("Canvas element does not exist.");
 
@@ -135,10 +164,35 @@ Layout = function(name, z){
     else
         Clip.log("Couldn't create new Layout.");
 };
-
 Layout.createLayout = function(layoutCreated){
     (this.all = this.all || []).push(layoutCreated);
 };
+
+
+/** Component Class
+ * Father of everything. For now only support for ThreeJs meshes.
+ * @param {Layout} layout Layout of the component to indicate the z-index.
+ */
+Component = function(mesh, layout){
+    this.layout = layout;
+};
+Component.defaultLayout = new Layout("default", 0);
+Component.prototype.update = function(diff){};
+Component.prototype.render = function(diff){};
+Component.prototype.position = new Vector3(0,0,0);
+Component.prototype.rotation = new Vector3(0,0,0);
+Clip.Component = Component;
+
+Entity = function(mesh, layout){};
+Entity.defaultLayout = new Layout("defaultEntity", -7);
+Entity.inherits(Component);
+Clip.Entity = Entity;
+
+Object = function(mesh, layout){};
+Object.defaultLayout = new Layout("defaultObject", -3);
+Object.inherits(Component);
+Object.prototype.spawn = function(){};
+Clip.Object = Object;
 
 /** Animation Class
  * Control animation instances
@@ -146,21 +200,8 @@ Layout.createLayout = function(layoutCreated){
 Animation = function(component){this.component = component;};
 Animation.prototype.update = function(diff){};
 Animation.prototype.render = function(diff){};
-Graphic.Animation = Animation;
+Component.Animation = Animation;
 
 
-/** Component Class
- * Father of everything
- * @param {Layout} layout Layout of the component to indicate the z-index.
- */
-Component = function(layout){
-    this.layout = layout;
-};
-Component.prototype.update = function(diff){};
-Component.prototype.render = function(diff){};
-Component.prototype.position = new Vector3(0,0,0);
-Component.prototype.rotation = new Vector3(0,0,0);
-Graphic.Component = Component;
-
-
-Clip.modules.Graphic = Graphic;
+Clip.modules.component = Component;
+Clip.modules.graphic = Graphic;
