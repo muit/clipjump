@@ -183,16 +183,14 @@ Component.prototype.position = new Vector3(0,0,0);
 Component.prototype.rotation = new Vector3(0,0,0);
 Clip.Component = Component;
 
-Entity = function(mesh, layout){};
-Entity.defaultLayout = new Layout("defaultEntity", -7);
-Entity.inherits(Component);
-Clip.Entity = Entity;
+Clip.Entity = function(mesh, layout){};
+Clip.Entity.defaultLayout = new Layout("defaultEntity", -7);
+Clip.Entity.inherits(Component);
 
-Object = function(mesh, layout){};
-Object.defaultLayout = new Layout("defaultObject", -3);
-Object.inherits(Component);
-Object.prototype.spawn = function(){};
-Clip.Object = Object;
+Clip.Object = function(mesh, layout){};
+Clip.Object.defaultLayout = new Layout("defaultObject", -3);
+Clip.Object.inherits(Component);
+Clip.Object.prototype.spawn = function(){};
 
 /** Animation Class
  * Control animation instances
