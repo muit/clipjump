@@ -225,5 +225,11 @@ Animation.prototype.render = function(diff){};
 Clip.Animation = Animation;
 
 
+Network = function(adapter){};
+Network.LocalAdapter = function(){};
+Network.WsAdapter = function(){};
+
+
 Clip.modules.logic = Logic;
 Clip.modules.graphic = Graphic;
+Clip.modules.network = Network;
