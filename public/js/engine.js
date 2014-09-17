@@ -55,6 +55,24 @@ Controller.prototype.addObject = function(object){
         throw new Error("Need an Object!");
     this.entities.push(object);
 };
+Controller.prototype.update = function(diff){
+    //Must change (4 loops every fps is crazy)
+    for(var io = 0, leno = this.entities.length; io < leno; io++){
+        this.entities[io].update(diff);
+    }
+    for(var ie = 0, lene = this.entities.length; ie < lene; ie++){
+        this.entities[ie].update(diff);
+    }
+};
+Controller.prototype.render = function(diff){
+    //Must change (4 loops every fps is crazy)
+    for(var io = 0, leno = this.entities.length; io < leno; io++){
+        this.entities[io].render(diff);
+    }
+    for(var ie = 0, lene = this.entities.length; ie < lene; ie++){
+        this.entities[ie].render(diff);
+    }
+};
 
 
 /** Graphic Class (API)
@@ -63,6 +81,9 @@ Controller.prototype.addObject = function(object){
  * @param {Object}     config     Project config.
  */
 Graphic = function(controller, config){
+    if(!controller)
+        throw new Error("Need a controller.");
+
     this.controller = controller;
     this.config = config;
     this.renderer = new THREE.WebGLRenderer();
@@ -151,9 +172,10 @@ Graphic.prototype.loadStats = function(){
     }
 };
 Graphic.prototype.loop = function(){
-    this.timer = new Timer(function(){
-
-    }, this.config.fps);
+    var self = this;
+    self.timer = new Timer(function(diff){
+        self.controller.render(diff);
+    }, self.config.fps);
 };
 
 
@@ -162,13 +184,17 @@ Graphic.prototype.loop = function(){
  * @param {Object}     config     Project config.
  */
 Logic = function(controller, config){
+    if(!controller)
+        throw new Error("Need a controller.");
+
     this.controller = controller;
     this.config = config;
 };
 Logic.prototype.loop = function(){
-    this.timer = new Timer(function(){
-
-    }, this.config.fps);
+    var self = this;
+    self.timer = new Timer(function(diff){
+        self.controller.update(diff);
+    }, self.config.fps);
 };
 
 
@@ -198,20 +224,27 @@ Layout.createLayout = function(layoutCreated){
  * @param {Layout} layout Layout of the component to indicate the z-index.
  */
 Component = function(mesh, layout){
-    this.layout = layout;
+    this.layout = layout || Component.defaultLayout;
 };
 Component.defaultLayout = new Layout("default", 0);
-Component.prototype.update = function(diff){};
+Component.prototype.update = function(diff){
+    if(this.ia) this.ia.update(diff);
+};
 Component.prototype.render = function(diff){};
 Component.prototype.position = new Vector3(0,0,0);
 Component.prototype.rotation = new Vector3(0,0,0);
+Component.prototype.addIA = function(ia){ this.ia = ia;};
 Clip.Component = Component;
 
-Clip.Component.Entity = function(mesh, layout){};
+Clip.Component.Entity = function(mesh, layout){
+    this.layout = layout || Component.Entity.defaultLayout;
+};
 Clip.Component.Entity.defaultLayout = new Layout("defaultEntity", -7);
 Clip.Component.Entity.inherits(Component);
 
-Clip.Component.Object = function(mesh, layout){};
+Clip.Component.Object = function(mesh, layout){
+    this.layout = layout || Component.Object.defaultLayout;
+};
 Clip.Component.Object.defaultLayout = new Layout("defaultObject", -3);
 Clip.Component.Object.inherits(Component);
 Clip.Component.Object.prototype.spawn = function(){};
@@ -224,11 +257,29 @@ Animation.prototype.update = function(diff){};
 Animation.prototype.render = function(diff){};
 Clip.Animation = Animation;
 
+/** Network Class
+ * Controls all the network comunication, including Internet, LAN and local.
+ * @param {Adapter} adapter Asign an adapter depending on the type of the network.
+ */
+Network = function(adapter){
+    if(adapter && !adapter instanceof Adapter)
+        throw new Error("arg#0 must be an Adapter.");
+    this.adapter = adapter || new WsAdapter();
+};
 
-Network = function(adapter){};
+Network.Adapter = function(){};
+Network.FakeAdapter = function(){};
+FakeAdapter.inherits(Adapter);
 Network.LocalAdapter = function(){};
+LocalAdapter.inherits(Adapter);
 Network.WsAdapter = function(){};
+WsAdapter.inherits(Adapter);
 
+
+IA = function(component){
+    this.component = component;
+};
+IA.prototype.update = function(diff){};
 
 Clip.modules.logic = Logic;
 Clip.modules.graphic = Graphic;
