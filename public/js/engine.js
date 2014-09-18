@@ -174,9 +174,12 @@ Graphic.prototype.loadStats = function(){
 Graphic.prototype.loop = function(){
     var self = this;
     self.timer = new Timer(function(diff){
-        self.controller.render(diff);
+        //self.scene.render();
     }, self.config.fps);
 };
+
+
+
 
 
 /** Logic Class (API)
@@ -219,43 +222,63 @@ Layout.createLayout = function(layoutCreated){
 };
 
 
+
+
+
 /** Component Class
  * Father of everything. For now only support for ThreeJs meshes.
  * @param {Layout} layout Layout of the component to indicate the z-index.
  */
 Component = function(mesh, layout){
     this.layout = layout || Component.defaultLayout;
+    this.mesh = mesh || undefined;
 };
 Component.defaultLayout = new Layout("default", 0);
 Component.prototype.update = function(diff){
     if(this.ia) this.ia.update(diff);
 };
-Component.prototype.render = function(diff){};
 Component.prototype.position = new Vector3(0,0,0);
 Component.prototype.rotation = new Vector3(0,0,0);
 Component.prototype.addIA = function(ia){ this.ia = ia;};
+Component.prototype.addCollider = function(){
+    //this.collider = new Collider();
+};
+Component.prototype.addMesh = function(geometry, material){
+    this.mesh = new THREE.Mesh(
+        geometry,
+        material || new THREE.MeshBasicMaterial({ color: 'blue' })
+    );
+};
 Clip.Component = Component;
+
 
 Clip.Component.Entity = function(mesh, layout){
     this.layout = layout || Component.Entity.defaultLayout;
+    this.mesh = mesh || undefined;
 };
 Clip.Component.Entity.defaultLayout = new Layout("defaultEntity", -7);
 Clip.Component.Entity.inherits(Component);
 
 Clip.Component.Object = function(mesh, layout){
     this.layout = layout || Component.Object.defaultLayout;
+    this.mesh = mesh || undefined;
 };
 Clip.Component.Object.defaultLayout = new Layout("defaultObject", -3);
 Clip.Component.Object.inherits(Component);
 Clip.Component.Object.prototype.spawn = function(){};
+
+
 
 /** Animation Class
  * Control animation instances
  */
 Animation = function(component){this.component = component;};
 Animation.prototype.update = function(diff){};
-Animation.prototype.render = function(diff){};
 Clip.Animation = Animation;
+
+
+
+
 
 /** Network Class
  * Controls all the network comunication, including Internet, LAN and local.
@@ -278,8 +301,71 @@ WsAdapter.inherits(Adapter);
 
 IA = function(component){
     this.component = component;
+    this.events = new EventMap();
 };
-IA.prototype.update = function(diff){};
+IA.prototype.update = function(diff){
+};
+
+SimpleEntityIA = function(component, attributes){
+    IA.call(this, component);
+    if(typeof attrigutes != "object")
+        throw new Error("Attributes must be a hash.");
+    var attr = this.attributes;
+    attr = attributes;
+    attr.health    = attr.health    || 0;
+    attr.minHealth = attr.minHealth || 0;
+    attr.maxHealth = attr.maxHealth || 1000;
+    attr.inCombat  = attr.inCombat  || false;
+    this.target = undefined;
+};
+SimpleEntityIA.inherits(IA);
+SimpleEntityIA.prototype.update = function(diff){
+    if(this.inCombat){
+        this.combatUpdate(diff);
+    }
+    else{
+        if((this.target = look()) !== undefined){
+            this.attack();
+        }
+    }
+};
+SimpleEntityIA.prototype.foward = function(diff){
+    //Controll COmponent Foward depending on movement type
+};
+SimpleEntityIA.prototype.look = function(){
+    return undefined;
+};
+SimpleEntityIA.prototype.attack = function(){
+    this.inCombat = true;
+    this.onCombatStart(this.target);
+};
+SimpleEntityIA.prototype.combatUpdate = function(diff){
+
+};
+
+//IA Events
+SimpleEntityIA.prototype.onDie = function(target){};
+SimpleEntityIA.prototype.onCombatStart = function(target){};
+SimpleEntityIA.prototype.onTargetDied = function(target){};
+SimpleEntityIA.prototype.onTargetLost = function(target){};
+SimpleEntityIA.prototype.onCombatEnd = function(){};
+
+SimpleEntityIA.prototype.damage = function(amount){
+    var attr = this.attributes;
+    if(attr.health-amount > attr.minHealth){
+        attr.health -= amount;
+        this.inCombat = true;
+        return false;
+    }
+    else{
+        attr.health = 0;
+        this.inCombat = false;
+        this.onDie(this.target);
+        this.onCombatEnd();
+        return true;
+    }
+
+};
 
 Clip.modules.logic = Logic;
 Clip.modules.graphic = Graphic;
