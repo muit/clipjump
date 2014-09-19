@@ -239,7 +239,10 @@ Component.prototype.update = function(diff){
 };
 Component.prototype.position = new Vector3(0,0,0);
 Component.prototype.rotation = new Vector3(0,0,0);
-Component.prototype.addIA = function(ia){ this.ia = ia;};
+Component.prototype.distanceOf = function(target){
+    return this.position.distance(target.position);
+};
+Component.prototype.addIA = function(ai){ this.ai = ai; this.ai.addComponent(this);};
 Component.prototype.addCollider = function(){
     //this.collider = new Collider();
 };
@@ -306,30 +309,41 @@ IA = function(component){
 IA.prototype.update = function(diff){
 };
 
-SimpleEntityIA = function(component, attributes){
+SimpleEntityIA = function(component, attr){
     IA.call(this, component);
     if(typeof attrigutes != "object")
         throw new Error("Attributes must be a hash.");
-    var attr = this.attributes;
-    attr = attributes;
-    attr.health    = attr.health    || 0;
-    attr.minHealth = attr.minHealth || 0;
-    attr.maxHealth = attr.maxHealth || 1000;
-    attr.inCombat  = attr.inCombat  || false;
+
+    attr.health      = attr.health      || 0;
+    attr.minHealth   = attr.minHealth   || 0;
+    attr.maxHealth   = attr.maxHealth   || 1000;
+    attr.inCombat    = attr.inCombat    || false;
+    attr.meleRange   = attr.meleRange   || 4;
+    attr.detectRange = attr.detectRange || 15;
+    attr.lostRange   = attr.lostRange   || 25;
+    this.attributes = attr;
     this.target = undefined;
 };
 SimpleEntityIA.inherits(IA);
+SimpleEntityIA.prototype.setComponent = function(me){this.me = me;};
 SimpleEntityIA.prototype.update = function(diff){
-    if(this.inCombat){
-        this.combatUpdate(diff);
-    }
-    else{
-        if((this.target = look()) !== undefined){
-            this.attack();
+    if(this.inCombat)
+    {
+        if(this.me.distanceOf(this.target) > this.attributes.lostRange)
+        {
+            this.target = undefined;
+            this.inCombat = false;
+            this.onCombatEnd();
         }
+        else
+            this.combatUpdate(diff);
+    }
+    else if((this.target = look()) !== undefined)
+    {
+        this.attack();
     }
 };
-SimpleEntityIA.prototype.foward = function(diff){
+SimpleEntityIA.prototype.foward = function(player, diff){
     //Controll COmponent Foward depending on movement type
 };
 SimpleEntityIA.prototype.look = function(){
