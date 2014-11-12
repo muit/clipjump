@@ -1,6 +1,6 @@
 {
   "name": "ClipJump",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "It's a secret.",
   "contributors": [
     "Miguel Fernandez <miguel_3c@hotmail.com>"
@@ -22,13 +22,16 @@
     "email": "miguel_3c@hotmail.com"
   },
   "dependencies": {
-    "socket.io": "1.1.0",
-    "serve-me": "0.2.13"
+    "serve-me": "0.2.53"
   },
   "devDependencies": {
     "gulp": "*",
+    "gulp-coffee": "*",
     "gulp-concat": "*",
+    "gulp-connect": "*",
+    "gulp-header": "*",
     "gulp-jasmine": "*",
+    "gulp-uglify": "*",
     "gulp-util": "*"
   },
   "private": false,
