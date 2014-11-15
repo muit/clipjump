@@ -22,7 +22,7 @@
     "email": "miguel_3c@hotmail.com"
   },
   "dependencies": {
-    "serve-me": "0.2.53"
+    "serve-me": "0.3.0"
   },
   "devDependencies": {
     "gulp": "*",
