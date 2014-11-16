@@ -1,302 +1,97 @@
-// Copyright (c) 2013 Turbulenz Limited
-/* global Protolib: false*/
-/* global Config: false*/
+ClipJump = function(){
+    this.map = new ClipJump.Map();
+    this.objects = [];
+    this.entities = [];
+};
 
-function Application() {}
-Application.prototype =
+ClipJump.prototype =
 {
-    // Use the properties from Config by default, otherwise use these defaults
-    protolibConfig: Protolib.extend(true, {
-        fps: 60,
-        useShadows: true
-    },
-    Config),
+    start: function(){
 
-    init: function initFn()
-    {
-        var protolib = this.protolib;
-        var mathDevice = protolib.getMathDevice();
-
-        //Vars
-        this.degToRad = Math.PI / 180;
-
-        //Intermediate variables
-        this.tempCameraPosition = mathDevice.v3Build(0, 0, 0);
-        this.tempCameraDirection = mathDevice.v3Build(0, 0, 0);
-        this.tempCameraRotation = 0;
-        this.tempLightPosition = mathDevice.v3Build(1, 3, -1);
-        this.tempLightDirection = mathDevice.v3Build(-1, -3, 1);
-
-        this.meshRotationMatrix = mathDevice.m43BuildIdentity();
-
-        //Background
-        var bgColor = mathDevice.v3Build(0.25, 0.25, 0.25);
-        protolib.setClearColor(bgColor);
-        protolib.setAmbientLightColor(bgColor);
-
-        //Camera
-        this.cameraRadius = 3;
-        this.cameraFocus = mathDevice.v3Build(0, 1, 0);
-        this.minCameraRadius = 2;
-        this.maxCameraRadius = 6;
-        protolib.setCameraFOV(90 * this.degToRad, 90 * this.degToRad);
-        protolib.setNearFarPlanes(0.01, 10);
-
-        //Lights
-        this.lightRotation = 0;
-        this.lightColor = mathDevice.v3Build(1, 1, 1);
-
-        this.spotLight = protolib.addSpotLight({
-            v3Position : this.tempLightPosition,
-            v3Direction : this.tempLightDirection,
-            range : 5,
-            spreadAngle: Math.PI / 2,
-            v3Color : this.lightColor
-        });
-
-        //Mesh
-        this.meshRotateSpeed = 0.1; //Rotations per second
-        this.meshRotation = 0;
-        this.lastMeshRotation = 0;
-        this.lastMeshRotateTime = -3;
-        this.mesh = protolib.loadMesh({
-            mesh: 'models/tz_logo.dae',
-            v3Size: mathDevice.v3Build(0.5, 0.5, 0.5),
-            v3Position: mathDevice.v3Build(0, 1, 0)
-        });
-
-        //Floor
-        this.whiteFloor = protolib.loadMesh({
-            mesh: 'models/white_cube.dae',
-            v3Size: mathDevice.v3Build(50, 0.1, 50),
-            v3Position: mathDevice.v3Build(0, -0.06, 0)
-        });
-
-        //Sound
-        this.bgSound = protolib.playSound({
-            sound: "sounds/bgmusic_loop.ogg",
-            background: true,
-            volume: 0.5,
-            looping: true
-        });
-
-        //Hiding mouse logic.
-        var inputDevice = protolib.getInputDevice();
-        inputDevice.addEventListener('mouseenter', function ()
-        {
-            inputDevice.hideMouse();
-        });
-
-        //Add sliders
-        var volumeInput = {
-                min : 0,
-                max : 1,
-                step : 0.05
-            };
-        if (this.protolibConfig.disableSound)
-        {
-            volumeInput.disabled = true;
-        }
-
-        // Volume slider
-        this.volumeSliderID = protolib.addWatchVariable({
-                title: 'Volume',
-                object: protolib.globals.settings,
-                property: 'volume',
-                group: "Settings",
-                type: protolib.watchTypes.SLIDER,
-                options: volumeInput
-            });
-        this.lastVolume = protolib.globals.settings.volume;
-        protolib.globals.settings.volume = 0; // Mute by default
-
-        //Text
-        this.turbulenzText = {
-            text: 'Powered by Turbulenz',
-            position: [180, protolib.height - 100],
-            v3Color: [1.0, 1.0, 1.0],
-            scale: 2,
-            horizontalAlign: protolib.textHorizontalAlign.LEFT
-        };
-
-        if (protolib.globals.config.debugMeshRotation)
-        {
-            this.rotationScaleSliderID = protolib.addWatchVariable({
-                title: 'Mesh Rotation',
-                object: this,
-                property: 'meshRotation',
-                group: "Debug",
-                type: protolib.watchTypes.SLIDER,
-                options: {
-                    min: 0,
-                    max: Math.PI * 2,
-                    step: Math.PI * 2 / 360 //1 degree
-                }
-            });
-        }
     },
 
-    update: function updateFn()
-    {
-        var protolib = this.protolib;
-        var utils = protolib.utils;
-        var mathDevice = protolib.getMathDevice();
+    pause: function(){
 
-        if (protolib.beginFrame())
-        {
-            protolib.draw2DSprite({
-                texture: 'textures/tz-logo.png',
-                position: [50, protolib.height - 150],
-                width: 100,
-                height: 100
-            });
-
-            var soundSpritePosition = [protolib.width - 100, protolib.height - 100];
-            protolib.draw2DSprite({
-                texture: 'textures/sound.png',
-                position: soundSpritePosition,
-                width: 50,
-                height: 50
-            });
-
-            var mousePosition = protolib.getMousePosition();
-            if (protolib.isMouseJustDown(protolib.mouseCodes.BUTTON_0))
-            {
-                if (mousePosition[0] > soundSpritePosition[0] &&
-                    mousePosition[0] < soundSpritePosition[0] + 50 &&
-                    mousePosition[1] > soundSpritePosition[1] &&
-                    mousePosition[1] < soundSpritePosition[1] + 50)
-                {
-                    if (protolib.globals.settings.volume > 0)
-                    {
-                        this.lastVolume = protolib.globals.settings.volume;
-                        protolib.globals.settings.volume = 0;
-                    }
-                    else
-                    {
-                        protolib.globals.settings.volume = this.lastVolume;
-                    }
-                }
-            }
-
-            if (protolib.globals.settings.volume === 0)
-            {
-                protolib.draw2DSprite({
-                    texture: 'textures/cross.png',
-                    v3Color: [1.0, 0.0, 0.0],
-                    position: [protolib.width - 100, protolib.height - 100],
-                    width: 50,
-                    height: 50
-                });
-            }
-
-            this.turbulenzText.position[1] = protolib.height - 100;
-            protolib.drawText(this.turbulenzText);
-
-            var currentTime = protolib.time.app.current; // The current time since the start of the app (seconds)
-            var deltaTime = protolib.time.app.delta; // The delta time since the previous call to protolib.beginFrame
-
-            if (this.lastMeshRotation === this.meshRotation)
-            {
-                if (this.lastMeshRotateTime + 3 < currentTime)
-                {
-                    this.meshRotation += Math.PI * 2 * deltaTime * this.meshRotateSpeed;
-                    this.meshRotation %= Math.PI * 2;
-                    this.lastMeshRotation = this.meshRotation;
-                }
-            }
-            else
-            {
-                this.lastMeshRotation = this.meshRotation;
-                this.lastMeshRotateTime = currentTime;
-            }
-
-            mathDevice.m43SetAxisRotation(this.meshRotationMatrix, mathDevice.v3BuildYAxis(), this.meshRotation);
-            this.mesh.setRotationMatrix(this.meshRotationMatrix);
-
-            //Camera controller: Rotate camera around y axis.
-            var mouseDelta = protolib.getMouseDelta();
-
-            if (protolib.isMouseDown(protolib.mouseCodes.BUTTON_0))
-            {
-                this.tempCameraRotation += mouseDelta[0] / 100;
-            }
-
-            var mouseWheelDelta = protolib.getMouseWheelDelta();
-            var cameraRadius = this.cameraRadius = utils.clamp(this.cameraRadius + (0.2 * mouseWheelDelta), this.minCameraRadius, this.maxCameraRadius);
-
-            var x = cameraRadius * Math.sin(this.tempCameraRotation);
-            var z = cameraRadius * Math.cos(this.tempCameraRotation);
-            mathDevice.v3Build(x, 2.5, z, this.tempCameraPosition);
-            protolib.setCameraPosition(this.tempCameraPosition);
-
-            mathDevice.v3Sub(this.cameraFocus, this.tempCameraPosition, this.tempCameraDirection);
-            protolib.setCameraDirection(this.tempCameraDirection);
-
-            //Rotate light around y axis.
-            if (protolib.isKeyDown(protolib.keyCodes.LEFT))
-            {
-                this.lightRotation -= 0.05;
-            }
-            else if (protolib.isKeyDown(protolib.keyCodes.RIGHT))
-            {
-                this.lightRotation += 0.05;
-            }
-            mathDevice.v3Build(Math.cos(this.lightRotation), 3, Math.sin(this.lightRotation), this.tempLightPosition);
-            this.spotLight.setPosition(this.tempLightPosition);
-            mathDevice.v3ScalarMul(this.tempLightPosition, -1, this.tempLightDirection);
-            this.spotLight.setDirection(this.tempLightDirection);
-
-            //Light sprite.
-            protolib.draw3DSprite({
-                texture: "textures/dot.png",
-                blendStyle: protolib.blendStyle.ADDITIVE,
-                v3Position: this.tempLightPosition,
-                size: 0.2,
-                v3Color: this.lightColor
-            });
-
-            //3D Axis
-            protolib.draw3DLine({pos1: [0, 0, 0], pos2: [1, 0, 0], v3Color: [1, 0, 0]});
-            protolib.draw3DLine({pos1: [0, 0, 0], pos2: [0, 1, 0], v3Color: [0, 1, 0]});
-            protolib.draw3DLine({pos1: [0, 0, 0], pos2: [0, 0, 1], v3Color: [0, 0, 1]});
-
-            protolib.draw2DSprite({
-                texture: "textures/cursor.png",
-                position: protolib.getMousePosition(),
-                width: 40,
-                height: 40
-            });
-
-            protolib.endFrame();
-        }
     },
 
-    destroy: function destroyFn()
-    {
-        var protolib = this.protolib;
-        if (protolib)
-        {
-            protolib.destroy();
-            this.protolib = null;
-        }
+    stop: function(){
+        TurbulenzEngine.flush();
+    },
+
+    update: function(){
+        ClipJump.Entity.update(this);
+        ClipJump.Object.update(this);
+
+        this.camera.update();
+    },
+
+    render: function(){
+
     }
 };
 
-// Application constructor function
-Application.create = function applicationCreateFn(params)
-{
-    var app = new Application();
-    app.protolib = params.protolib;
-    if (!app.protolib)
-    {
-        var console = window.console;
-        if (console)
-        {
-            console.error("Protolib could not be found");
-        }
-        return null;
-    }
-    app.init();
-    return app;
+ClipJump.create = function(){
+    var game = new ClipJump();
+
+    return ClipJump.instance = game;
 };
+
+
+/**
+ * ClipJump.Camera
+ * Camera control & update
+ */
+ClipJump.Camera = function(){
+    var mathDevice = this.devices.mathDevice;
+    var v3Build = mathDevice.v3Build;
+
+    // Camera looks along -ive z direction towards origin - has 60 degree FOV
+    var cameraPosition = v3Build.call(mathDevice, -0.5, -25.0, 25.0);
+    var cameraTarget = v3Build.call(mathDevice, -0.5, 0.0, 0.0);
+    var worldUp = v3Build.call(mathDevice, 0.0, 1.0, 0.0);
+    var halfFov = Math.tan(30 * (Math.PI / 180));
+    var camera = Camera.create(mathDevice);
+
+    camera.recipViewWindowX = (1.0 / halfFov);
+    camera.recipViewWindowY = (1.0 / halfFov);
+    camera.updateProjectionMatrix();
+    camera.lookAt(cameraTarget, worldUp, cameraPosition);
+    camera.updateViewMatrix();
+
+    this.camera = camera;
+};
+ClipJump.Camera.prototype.get = function(){return this.camera;};
+
+ClipJump.Camera.prototype.update = function(){
+    var camera = this.camera;
+    var graphicsDevice = this.devices.graphicsDevice;
+    var deviceWidth = graphicsDevice.width;
+    var deviceHeight = graphicsDevice.height;
+    var aspectRatio = (deviceWidth / deviceHeight);
+
+    if (aspectRatio !== camera.aspectRatio) {
+        camera.aspectRatio = aspectRatio;
+        camera.updateProjectionMatrix();
+    }
+    camera.updateViewProjectionMatrix();
+};
+
+
+/**
+ * ClipJump.Entity
+ */
+ClipJump.Entity = function(){};
+
+
+/**
+ * ClipJump.Object
+ */
+ClipJump.Object = function(){};
+
+
+/**
+ * ClipJump.Map
+ * @param {object} options [map default options]
+ */
+ClipJump.Map = function(opts){};
+

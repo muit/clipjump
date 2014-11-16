@@ -51,44 +51,30 @@
 /*{{ javascript('protolib/simplesprite.js') }}*/
 /*{{ javascript('protolib/soundsourcemanager.js') }}*/
 
-/*{{ javascript('scripts/protolibsampleapp.js') }}*/
+/*{{ javascript('scripts/clipjump.js') }}*/
 
 TurbulenzEngine.onload = function onloadFn()
 {
-    var protolibConfig = Application.prototype.protolibConfig || {};
-    var intervalID;
+    var protolibConfig = ClipJump.prototype.protolibConfig || {},
+        intervalID;
+
     protolibConfig.onInitialized = function onInitializedFn(protolib)
     {
-        var application = Application.create({
-            protolib: protolib
-        });
-        if (!application)
+        var game = ClipJump.create(null);
+        if (!game)
         {
-            var console = window.console;
-            if (console)
-            {
-                console.error("Application not created correctly, make sure Protolib is initialized correctly");
-            }
+            if (window.console)
+                window.console.error("Application not created correctly, make sure Protolib is initialized correctly");
             return;
         }
-        var fps = protolibConfig.fps || 60;
+
         intervalID = TurbulenzEngine.setInterval(function ()
         {
-            application.update();
-        }, 1000 / fps);
+            game.update();
+        }, 1000 / (protolibConfig.fps || 60));
 
         TurbulenzEngine.onunload = function onUnloadFn()
         {
-            if (intervalID)
-            {
-                TurbulenzEngine.clearInterval(intervalID);
-                intervalID = null;
-            }
-            if (application && application.destroy)
-            {
-                application.destroy();
-                application = null;
-            }
         };
 
     };
