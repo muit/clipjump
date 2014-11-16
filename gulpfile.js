@@ -9,13 +9,12 @@ var header  = require('gulp-header');
 var uglify  = require('gulp-uglify');
 var gutil   = require('gulp-util');
 var pkg     = require('./package.json');
-var ServeMe = require('serve-me')({directory: './public', debug: true });
+var ServeMe = require('serve-me')({directory: './public', debug: false });
 if(typeof Utyl == "undefined")
   require("./source/utyl/utyl.js");
 
 // -- FILES --------------------------------------------------------------------
 var assets = './public/assets';
-var libs = './lib';
 
 var source = {
   game: ['source/game/*.coffee', 'source/game/scripts/*.coffee'],
@@ -35,7 +34,7 @@ gulp.task('game', function()
 {
   gulp.src(source.game)
     .pipe(concat(pkg.name +'.coffee'))
-    .pipe(coffee())
+    .pipe(coffee().on('error', gutil.log))
     .pipe(uglify({mangle: false}))
     .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest(assets + '/js'))
@@ -54,7 +53,7 @@ gulp.task('init', function()
 
 gulp.task('default', function()
 {
-  gulp.run(['init']);
+  //gulp.run(['game']);
   gulp.run(['webserver']);
   gulp.watch(source.game, ['game']);
 });

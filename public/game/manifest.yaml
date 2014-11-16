@@ -1,0 +1,16 @@
+aspect_ratio: '16:9'
+canvas_main: clipjump.canvas.js
+deploy_files:
+- clipjump.canvas.js
+- mapping_table.json
+- staticmax/*
+deployed: Never
+engine_version: '0.28'
+flash_main: ''
+is_multiplayer: false
+is_temp: false
+mapping_table: mapping_table.json
+plugin_main: ''
+slug: clipjump
+title: ClipJump
+title_logo: ''
