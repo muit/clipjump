@@ -156,99 +156,51 @@ html, body, div, span, object, iframe, h1, h2, p, a, img, ul, li, fieldset, form
       // Embedded code and startup code.
       // Supplied by 'tz_startup_code' variable.
       // ----------------------------------------
+        /*global TurbulenzEngine: false*/
+        /*global ClipJump: false*/
+        /*global Protolib: false*/
 
-/*global TurbulenzEngine: false*/
-/*global Application: false*/
-/*global Protolib: false*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TurbulenzEngine.onload = function onloadFn()
-{
-    var protolibConfig = Application.prototype.protolibConfig || {};
-    var intervalID;
-    protolibConfig.onInitialized = function onInitializedFn(protolib)
-    {
-        var application = Application.create({
-            protolib: protolib
-        });
-        if (!application)
+        TurbulenzEngine.onload = function onloadFn()
         {
-            var console = window.console;
-            if (console)
+            var protolibConfig = ClipJump.prototype.protolibConfig || {};
+            var intervalID;
+            protolibConfig.onInitialized = function onInitializedFn(protolib)
             {
-                console.error("Application not created correctly, make sure Protolib is initialized correctly");
-            }
-            return;
-        }
-        var fps = protolibConfig.fps || 60;
-        intervalID = TurbulenzEngine.setInterval(function ()
-        {
-            application.update();
-        }, 1000 / fps);
+                var application = ClipJump.create({
+                    protolib: protolib
+                });
+                if (!application)
+                {
+                    var console = window.console;
+                    if (console)
+                    {
+                        console.error("Application not created correctly, make sure Protolib is initialized correctly");
+                    }
+                    return;
+                }
+                var fps = protolibConfig.fps || 60;
+                intervalID = TurbulenzEngine.setInterval(function ()
+                {
+                    application.update();
+                }, 1000 / fps);
 
-        TurbulenzEngine.onunload = function onUnloadFn()
-        {
-            if (intervalID)
-            {
-                TurbulenzEngine.clearInterval(intervalID);
-                intervalID = null;
-            }
-            if (application && application.destroy)
-            {
-                application.destroy();
-                application = null;
-            }
+                TurbulenzEngine.onunload = function onUnloadFn()
+                {
+                    if (intervalID)
+                    {
+                        TurbulenzEngine.clearInterval(intervalID);
+                        intervalID = null;
+                    }
+                    if (application && application.destroy)
+                    {
+                        application.destroy();
+                        application = null;
+                    }
+                };
+
+            };
+            Protolib.create(protolibConfig);
         };
-
-    };
-    Protolib.create(protolibConfig);
-};
 
         // Engine startup
         window.onload = function ()
@@ -293,7 +245,6 @@ TurbulenzEngine.onload = function onloadFn()
 
             startCanvas();
         };  // window.onload()
-
     </script>
 
 </body>

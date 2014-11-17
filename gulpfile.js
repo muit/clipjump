@@ -9,7 +9,7 @@ var header  = require('gulp-header');
 var uglify  = require('gulp-uglify');
 var gutil   = require('gulp-util');
 var pkg     = require('./package.json');
-var ServeMe = require('serve-me')({directory: './public', debug: false });
+var ServeMe = require('serve-me')({directory: './public', debug: true, log: true });
 if(typeof Utyl == "undefined")
   require("./source/utyl/utyl.js");
 
