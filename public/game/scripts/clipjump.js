@@ -1,4 +1,5 @@
-ClipJump = function(){
+ClipJump = function()
+{
     this.map = new ClipJump.Map();
     this.objects = [];
     this.entities = [];
@@ -6,33 +7,38 @@ ClipJump = function(){
 
 ClipJump.prototype =
 {
-    start: function(){
+    start: function()
+    {
+        this.camera = new ClipJump.Camera();
+    },
+
+    pause: function()
+    {
 
     },
 
-    pause: function(){
-
-    },
-
-    stop: function(){
+    stop: function()
+    {
         TurbulenzEngine.flush();
     },
 
-    update: function(){
+    update: function()
+    {
         ClipJump.Entity.update(this);
         ClipJump.Object.update(this);
 
         this.camera.update();
     },
 
-    render: function(){
-
+    render: function()
+    {
     }
 };
 
-ClipJump.create = function(){
+ClipJump.create = function()
+{
     var game = new ClipJump();
-
+    game.start();
     return ClipJump.instance = game;
 };
 
@@ -41,8 +47,9 @@ ClipJump.create = function(){
  * ClipJump.Camera
  * Camera control & update
  */
-ClipJump.Camera = function(){
-    var mathDevice = this.devices.mathDevice;
+ClipJump.Camera = function()
+{
+    var mathDevice = WebGLMathDevice;
     var v3Build = mathDevice.v3Build;
 
     // Camera looks along -ive z direction towards origin - has 60 degree FOV
@@ -60,11 +67,13 @@ ClipJump.Camera = function(){
 
     this.camera = camera;
 };
+
 ClipJump.Camera.prototype.get = function(){return this.camera;};
 
-ClipJump.Camera.prototype.update = function(){
+ClipJump.Camera.prototype.update = function()
+{
     var camera = this.camera;
-    var graphicsDevice = this.devices.graphicsDevice;
+    var graphicsDevice =WebGLGraphicsDevice;
     var deviceWidth = graphicsDevice.width;
     var deviceHeight = graphicsDevice.height;
     var aspectRatio = (deviceWidth / deviceHeight);
@@ -82,12 +91,14 @@ ClipJump.Camera.prototype.update = function(){
  */
 ClipJump.Entity = function(){};
 
+ClipJump.Entity.update = function(game){};
 
 /**
  * ClipJump.Object
  */
 ClipJump.Object = function(){};
 
+ClipJump.Object.update= function(game){};
 
 /**
  * ClipJump.Map
