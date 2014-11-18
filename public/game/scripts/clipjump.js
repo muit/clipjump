@@ -28,6 +28,8 @@ ClipJump.prototype =
         ClipJump.Object.update(this);
 
         this.camera.update();
+
+        this.clearColor = WebGLMathDevice.v4Build.call(WebGLMathDevice, 1, 0, 0, 1, this.clearColor);
     },
 
     render: function()
@@ -39,8 +41,19 @@ ClipJump.create = function()
 {
     var game = new ClipJump();
     game.start();
+    game.clearColor = WebGLMathDevice.v4Build(0, 0, 0, 1);
     return ClipJump.instance = game;
 };
+
+
+/**
+ * ClipJump.Scene
+ * @param {object} options [map default options]
+ */
+ClipJump.Scene = function()
+{
+
+}
 
 
 /**
@@ -49,15 +62,14 @@ ClipJump.create = function()
  */
 ClipJump.Camera = function()
 {
-    var mathDevice = WebGLMathDevice;
-    var v3Build = mathDevice.v3Build;
+    var v3Build = WebGLMathDevice.v3Build;
 
     // Camera looks along -ive z direction towards origin - has 60 degree FOV
-    var cameraPosition = v3Build.call(mathDevice, -0.5, -25.0, 25.0);
-    var cameraTarget = v3Build.call(mathDevice, -0.5, 0.0, 0.0);
-    var worldUp = v3Build.call(mathDevice, 0.0, 1.0, 0.0);
+    var cameraPosition = v3Build.call(WebGLMathDevice, -0.5, -25.0, 25.0);
+    var cameraTarget = v3Build.call(WebGLMathDevice, -0.5, 0.0, 0.0);
+    var worldUp = v3Build.call(WebGLMathDevice, 0.0, 1.0, 0.0);
     var halfFov = Math.tan(30 * (Math.PI / 180));
-    var camera = Camera.create(mathDevice);
+    var camera = Camera.create(WebGLMathDevice);
 
     camera.recipViewWindowX = (1.0 / halfFov);
     camera.recipViewWindowY = (1.0 / halfFov);
@@ -93,6 +105,7 @@ ClipJump.Entity = function(){};
 
 ClipJump.Entity.update = function(game){};
 
+
 /**
  * ClipJump.Object
  */
@@ -100,9 +113,9 @@ ClipJump.Object = function(){};
 
 ClipJump.Object.update= function(game){};
 
+
 /**
  * ClipJump.Map
  * @param {object} options [map default options]
  */
 ClipJump.Map = function(opts){};
-
