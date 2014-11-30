@@ -9,18 +9,23 @@ var header  = require('gulp-header');
 var uglify  = require('gulp-uglify');
 var gutil   = require('gulp-util');
 var pkg     = require('./package.json');
-var ServeMe = require('serve-me')({directory: './public', debug: true, log: true });
+
 if(typeof Utyl == "undefined")
   require("./source/utyl/utyl.js");
 
 // -- FILES --------------------------------------------------------------------
-var assets = './public/assets';
-
-var source = {
-  game: ['source/game/*.coffee', 'source/game/scripts/*.coffee'],
+var assets  = './public/assets';
+var source  = {
+  game:   [
+    'source/game/*.coffee', 
+    'source/game/scripts/*.coffee'
+  ],
+  server: [
+    'source/server/*.coffee',
+    'source/server/scripts/*.coffee'
+  ],
 };
-
-var banner = ['/**',
+var banner  = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
   ' * @link    <%= pkg.homepage %>',
@@ -41,19 +46,27 @@ gulp.task('game', function()
     .pipe(connect.reload());
 });
 
-gulp.task('webserver', function()
+gulp.task('server', function()
 {
-  ServeMe.start(8080);
+  gulp.src(source.server)
+    .pipe(concat('core.coffee'))
+    .pipe(coffee().on('error', gutil.log))
+    .pipe(uglify({mangle: false}))
+    .pipe(header(banner, {pkg: pkg}))
+    .pipe(gulp.dest('./bin'))
+    .pipe(connect.reload());
 });
 
 gulp.task('init', function()
 {
-  gulp.run(['game']);
+  //gulp.run(['game']);
+  gulp.run(['server']);
 });
 
 gulp.task('default', function()
 {
-  //gulp.run(['game']);
-  gulp.run(['webserver']);
+  gulp.run(['init']);
+
+  Core = new require("./bin/core.js")();
   gulp.watch(source.game, ['game']);
 });
