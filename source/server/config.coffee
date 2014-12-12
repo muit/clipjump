@@ -1,8 +1,8 @@
-module.exports =
+Config =
   env: "development",
 
   server:
-    port: 3000
+    port: 3000,
     home: "index.html",
     directory: "./public",
     debug: true,

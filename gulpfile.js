@@ -14,10 +14,11 @@ if(typeof Utyl == "undefined")
   require("./source/utyl/utyl.js");
 
 // -- FILES --------------------------------------------------------------------
-var assets  = './public/assets';
+var assets  = './public/game/assets';
+var libs  = './public/game/js';
 var source  = {
   game:   [
-    'source/game/*.coffee', 
+    'source/game/*.coffee',
     'source/game/scripts/*.coffee'
   ],
   server: [
@@ -38,11 +39,10 @@ var banner  = ['/**',
 gulp.task('game', function()
 {
   gulp.src(source.game)
-    .pipe(concat(pkg.name +'.coffee'))
+    .pipe(concat(pkg.name.toLowerCase() +'.coffee'))
     .pipe(coffee().on('error', gutil.log))
     .pipe(uglify({mangle: false}))
-    .pipe(header(banner, {pkg: pkg}))
-    .pipe(gulp.dest(assets + '/js'))
+    .pipe(gulp.dest(libs))
     .pipe(connect.reload());
 });
 
@@ -52,14 +52,13 @@ gulp.task('server', function()
     .pipe(concat('core.coffee'))
     .pipe(coffee().on('error', gutil.log))
     .pipe(uglify({mangle: false}))
-    .pipe(header(banner, {pkg: pkg}))
     .pipe(gulp.dest('./bin'))
     .pipe(connect.reload());
 });
 
 gulp.task('init', function()
 {
-  //gulp.run(['game']);
+  gulp.run(['game']);
   gulp.run(['server']);
 });
 
@@ -67,6 +66,7 @@ gulp.task('default', function()
 {
   gulp.run(['init']);
 
-  Core = new require("./bin/core.js")();
+  new require("./bin/core")();
+
   gulp.watch(source.game, ['game']);
 });

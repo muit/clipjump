@@ -1,0 +1,2 @@
+class ClipJump
+  class Unit
