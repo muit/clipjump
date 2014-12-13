@@ -19,6 +19,10 @@ var libs  = './public/game/js';
 var source  = {
   game:   [
     'source/game/*.coffee',
+    'source/game/models/unit.coffee',
+    'source/game/models/entity.coffee',
+    'source/game/models/object.coffee',
+    'source/game/models/cube.coffee',
     'source/game/scripts/*.coffee'
   ],
   server: [
@@ -26,6 +30,7 @@ var source  = {
     'source/server/scripts/*.coffee'
   ],
 };
+
 var banner  = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',

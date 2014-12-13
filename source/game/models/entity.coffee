@@ -1,2 +1,3 @@
-class ClipJump
-  class Cube extends Unit
+class CJ.Cube extends CJ.Unit
+  constructor: ->
+    super

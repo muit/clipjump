@@ -1,2 +1,4 @@
-class ClipJump
-  class Unit
+class CJ.Unit
+  entity = {}
+  constructor: ->
+    @entity = new pc.fw.Entity

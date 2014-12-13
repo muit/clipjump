@@ -1,21 +1,17 @@
 <html>
 <head>
+    <script src="jslib/playcanvas.js"></script>
+    <script type="text/javascript" src="js/clipjump.js"></script>
 </head>
 <body>
-    <div id="engine" style="background:#000;position:fixed;top:0px;
+    <div id="game-container" style="background:#000;position:fixed;top:0px;
                             bottom:0;right:0;left:0px;
                             border-left:1px solid #898989;">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" style="width:100%;height:100%;"></canvas>
+
+        <script>
+            window.game = new CJ.Game();
+        </script>
     </div>
-
-
-    <script src="turbulenz/debug.js"></script>
-    <script src="turbulenz/webgl/turbulenzengine.js"></script>
-    <script src="turbulenz/webgl/graphicsdevice.js"></script>
-
-    <script type="text/javascript" src="js/clipjump.js"></script>
-    <script>
-        CP = new ClipJump();
-    </script>
 </body>
 </html>

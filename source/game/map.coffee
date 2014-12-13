@@ -1,0 +1,2 @@
+class CJ.Map
+  constructor: ->
