@@ -4,3 +4,6 @@ class CJ.Cube extends CJ.Unit
     CJ.instance.application.context.systems.model.addComponent @entity, {
       type: "box",
     }
+
+  setColor: (color)->
+    #@instance.color = color
