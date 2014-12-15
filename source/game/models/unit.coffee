@@ -4,8 +4,11 @@ class CJ.Unit
   constructor: ->
     @entity = new pc.fw.Entity
 
-  addContext: ->
-    CJ.instance.application.context.root.addChild @entity
+  addContext: (context)->
+    if !context
+      CJ.instance.application.context.root.addChild @entity
+    else
+      context.addChild @entity
 
   translate: (x, y, z)->
     @entity.translate x,y,z

@@ -1,6 +1,11 @@
 class CJ.Level
-  @levels = {}
+  @list = []
   @add: (level)->
-    @levels[level.id] = level
+    @list[level.id] = level
+
+  @get: (id)->
+    return @list[id]
 
   constructor: (@id)->
+
+  setBlocks: (@blocks)->

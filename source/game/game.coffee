@@ -22,7 +22,11 @@ class CJ.Game
     @application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
     @application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
-    @cube = new CJ.Cube
+    @map = new CJ.Map
+    @map.load CJ.Level.get 0
+
+    light = new CJ.Light {}
+    light.translate 2,2,2
 
     #Camera
     @camera = new pc.fw.Entity
@@ -30,23 +34,15 @@ class CJ.Game
       clearColor: new pc.Color 0.4, 0.45, 0.5
     }
     @application.context.root.addChild(@camera);
-    @camera.translate 0, 0, 10
-    @camera.lookAt 0, 0, 0
+    @camera.translate 2, 2, 10
+    @camera.lookAt 2, 0, 0
 
+    @application.on "update", @update
 
-    angle = 0;
-    @application.on "update", (dt) =>
-      angle += dt
-      if (angle > 360)
-        angle = 0;
-
-      # Move the light in a circle
-      if window.light!=undefined then light.entity.setLocalPosition(3 * Math.sin(angle), 0, 3 * Math.cos(angle));
-
-      # Rotate the cube
-      @cube.entity.setEulerAngles(angle*2, angle*4, angle*8);
 
   onunload: ->
+
+  update: (dt)->
 
 
   error: (message) ->

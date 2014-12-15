@@ -50,7 +50,7 @@ gulp.task('game', function()
   gulp.src(source.game)
     .pipe(concat(pkg.name.toLowerCase() +'.coffee'))
     .pipe(coffee().on('error', gutil.log))
-    .pipe(uglify({mangle: false}))
+    .pipe(uglify({mangle: false}))//Comment this to debug
     .pipe(gulp.dest(libs))
     .pipe(connect.reload());
 });
