@@ -23,6 +23,10 @@ var source  = {
     'source/game/models/entity.coffee',
     'source/game/models/object.coffee',
     'source/game/models/cube.coffee',
+    'source/game/models/light.coffee',
+    'source/game/level.coffee',
+    'source/game/map.coffee',
+    'source/game/levels/*.coffee',
     'source/game/scripts/*.coffee'
   ],
   server: [
