@@ -14,12 +14,4 @@ class CJ.Unit
     @entity.translate x,y,z
 
   addScript: (name)->
-    @script = new pc.fw.ScriptComponent (new pc.fw.ScriptComponentSystem @entity), @entity
-
-    ###
-    @entity.addComponent script, {
-      scripts: [{
-          name: name
-      }]
-    }
-    ###
+    CJ.Script.add name, this

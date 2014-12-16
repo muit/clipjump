@@ -46,6 +46,7 @@
       light.translate(2, 2, 2);
       this.player = new CJ.Player;
       this.player.translate(1, 1, 1);
+      this.player.addScript("input_handler");
       this.camera = new pc.fw.Entity;
       this.application.context.systems.camera.addComponent(this.camera, {
         clearColor: new pc.Color(0.6, 0.6, 0.6)
@@ -58,7 +59,9 @@
 
     Game.prototype.onunload = function() {};
 
-    Game.prototype.update = function(dt) {};
+    Game.prototype.update = function(dt) {
+      return CJ.Script.update(dt);
+    };
 
     Game.prototype.error = function(message) {
       throw new Error(message);
@@ -145,6 +148,51 @@
 
   })();
 
+  CJ.Script = (function() {
+    function Script() {}
+
+    Script._list = {};
+
+    Script.scripts_loaded = [];
+
+    Script.create = function(name, callback) {
+      return this._list[name] = callback();
+    };
+
+    Script.add = function(name, unit) {
+      var script;
+      script = new this._list[name](unit);
+      script.initialize();
+      this.scripts_loaded.push(script);
+      return script;
+    };
+
+    Script.initialize = function() {
+      var script, _i, _len, _ref, _results;
+      _ref = this.scripts_loaded;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        script = _ref[_i];
+        _results.push(script.initialize());
+      }
+      return _results;
+    };
+
+    Script.update = function(dt) {
+      var script, _i, _len, _ref, _results;
+      _ref = this.scripts_loaded;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        script = _ref[_i];
+        _results.push(script.update(dt));
+      }
+      return _results;
+    };
+
+    return Script;
+
+  })();
+
   CJ.Unit = (function() {
     var entity;
 
@@ -169,15 +217,7 @@
     };
 
     Unit.prototype.addScript = function(name) {
-      return this.script = new pc.fw.ScriptComponent(new pc.fw.ScriptComponentSystem(this.entity), this.entity);
-
-      /*
-      @entity.addComponent script, {
-        scripts: [{
-            name: name
-        }]
-      }
-       */
+      return CJ.Script.add(name, this);
     };
 
     return Unit;
@@ -304,7 +344,30 @@
 
     function Player(context) {
       Player.__super__.constructor.call(this, 4, context);
+      this.controller = new pc.input.Controller(document);
+      this.controller.registerKeys('forward', [pc.input.KEY_UP, pc.input.KEY_W]);
+      this.controller.registerKeys('back', [pc.input.KEY_DOWN, pc.input.KEY_S]);
+      this.controller.registerKeys('left', [pc.input.KEY_LEFT, pc.input.KEY_A]);
+      this.controller.registerKeys('right', [pc.input.KEY_RIGHT, pc.input.KEY_D]);
+      this.controller.registerKeys('jump', [pc.input.KEY_SPACE]);
     }
+
+    Player.prototype.update = function(dt) {
+      var x, z;
+      x = 0;
+      if (this.controller.wasPressed('forward')) {
+        z = 1;
+      } else if (this.controller.wasPressed('back')) {
+        z = -1;
+      }
+      z = 0;
+      if (this.controller.wasPressed('left')) {
+        x = 1;
+      } else if (this.controller.wasPressed('right')) {
+        x = -1;
+      }
+      return this.entity.translate(x, 0, z);
+    };
 
     return Player;
 
@@ -526,15 +589,16 @@
 
   CJ.Level.add(level);
 
-  pc.script.create("keyboard_handler", (function(_this) {
-    return function(context) {
-      var KeyboardHandler;
-      KeyboardHandler = (function() {
-        function KeyboardHandler(entity) {
-          this.entity = entity;
+  CJ.Script.create("input_handler", (function(_this) {
+    return function() {
+      var InputHandler;
+      InputHandler = (function() {
+        function InputHandler(unit) {
+          this.unit = unit;
+          this.speed = 3;
         }
 
-        KeyboardHandler.prototype.initialize = function() {
+        InputHandler.prototype.initialize = function() {
           this.controller = new pc.input.Controller(document);
           this.controller.registerKeys('forward', [pc.input.KEY_UP, pc.input.KEY_W]);
           this.controller.registerKeys('back', [pc.input.KEY_DOWN, pc.input.KEY_S]);
@@ -543,27 +607,27 @@
           return this.controller.registerKeys('jump', [pc.input.KEY_SPACE]);
         };
 
-        KeyboardHandler.prototype.update = function(dt) {
+        InputHandler.prototype.update = function(dt) {
           var x, z;
-          x = 0;
           z = 0;
-          if (this.controller.wasPressed('forward')) {
-            z = 1;
-          } else if (this.controller.wasPressed('back')) {
+          if (this.controller.isPressed('forward')) {
             z = -1;
+          } else if (this.controller.isPressed('back')) {
+            z = 1;
           }
-          if (this.controller.wasPressed('left')) {
-            x = 1;
-          } else if (this.controller.wasPressed('right')) {
+          x = 0;
+          if (this.controller.isPressed('left')) {
             x = -1;
+          } else if (this.controller.isPressed('right')) {
+            x = 1;
           }
-          return this.entity.translate(x, 0, z);
+          return this.unit.entity.translate(x * this.speed * dt, 0, z * this.speed * dt);
         };
 
-        return KeyboardHandler;
+        return InputHandler;
 
       })();
-      return KeyboardHandler;
+      return InputHandler;
     };
   })(this));
 

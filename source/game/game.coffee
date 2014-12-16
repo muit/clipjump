@@ -25,6 +25,7 @@ class CJ.Game
     @application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
     @application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
+    #Load Map
     @map = new CJ.Map
     @map.load CJ.Level.get 0
 
@@ -37,7 +38,7 @@ class CJ.Game
     #Add Player
     @player = new CJ.Player
     @player.translate 1,1,1
-    #BUG: @player.addScript "keyboard_handler"
+    @player.addScript "input_handler"
 
 
     #Camera
@@ -55,7 +56,7 @@ class CJ.Game
   onunload: ->
 
   update: (dt)->
-
+    CJ.Script.update dt
 
   error: (message) ->
     throw new Error message

@@ -34,8 +34,8 @@ class CJ.Cube.Types
 
 
   # All types of blocks
-  @add 0, "Nothing",   undefined
-  @add 1, "Blue Box",  undefined
-  @add 2, "Green Box", undefined
-  @add 3, "Red Box",   undefined
-  @add 4, "Player Box",   undefined
+  @add 0, "Nothing",    undefined
+  @add 1, "Blue Box",   undefined
+  @add 2, "Green Box",  undefined
+  @add 3, "Red Box",    undefined
+  @add 4, "Player Box", undefined
