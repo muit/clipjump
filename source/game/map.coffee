@@ -10,7 +10,6 @@ class CJ.Map
           if cubeId != 0
             cube = new CJ.Cube cubeId, @entity
             cube.translate x, y, z
-            console.log x+" "+y+" "+z
 
   reset: ->
     for entity in map.entity._children

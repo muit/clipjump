@@ -6,6 +6,9 @@
 **************************************************************************###
 
 window.CJ or= {};
+CJ.log = (message)->
+  console.log "ClipJump: "+message
+
 class CJ.Game
   application = {}
 
@@ -25,13 +28,22 @@ class CJ.Game
     @map = new CJ.Map
     @map.load CJ.Level.get 0
 
-    light = new CJ.Light {}
+    light = new CJ.Light {
+      type: "point",
+      castShadows: true
+    }
     light.translate 2,2,2
+
+    #Add Player
+    @player = new CJ.Player
+    @player.translate 1,1,1
+    #BUG: @player.addScript "keyboard_handler"
+
 
     #Camera
     @camera = new pc.fw.Entity
     @application.context.systems.camera.addComponent @camera, {
-      clearColor: new pc.Color 0.4, 0.45, 0.5
+      clearColor: new pc.Color 0.6, 0.6, 0.6
     }
     @application.context.root.addChild(@camera);
     @camera.translate 2, 2, 10

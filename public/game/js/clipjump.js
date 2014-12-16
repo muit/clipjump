@@ -16,6 +16,10 @@
 
   window.CJ || (window.CJ = {});
 
+  CJ.log = function(message) {
+    return console.log("ClipJump: " + message);
+  };
+
   CJ.Game = (function() {
     var application;
 
@@ -35,11 +39,16 @@
       this.application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
       this.map = new CJ.Map;
       this.map.load(CJ.Level.get(0));
-      light = new CJ.Light({});
+      light = new CJ.Light({
+        type: "point",
+        castShadows: true
+      });
       light.translate(2, 2, 2);
+      this.player = new CJ.Player;
+      this.player.translate(1, 1, 1);
       this.camera = new pc.fw.Entity;
       this.application.context.systems.camera.addComponent(this.camera, {
-        clearColor: new pc.Color(0.4, 0.45, 0.5)
+        clearColor: new pc.Color(0.6, 0.6, 0.6)
       });
       this.application.context.root.addChild(this.camera);
       this.camera.translate(2, 2, 10);
@@ -107,8 +116,7 @@
                 cubeId = line[y];
                 if (cubeId !== 0) {
                   cube = new CJ.Cube(cubeId, this.entity);
-                  cube.translate(x, y, z);
-                  _results2.push(console.log(x + " " + y + " " + z));
+                  _results2.push(cube.translate(x, y, z));
                 } else {
                   _results2.push(void 0);
                 }
@@ -160,6 +168,18 @@
       return this.entity.translate(x, y, z);
     };
 
+    Unit.prototype.addScript = function(name) {
+      return this.script = new pc.fw.ScriptComponent(new pc.fw.ScriptComponentSystem(this.entity), this.entity);
+
+      /*
+      @entity.addComponent script, {
+        scripts: [{
+            name: name
+        }]
+      }
+       */
+    };
+
     return Unit;
 
   })();
@@ -191,13 +211,13 @@
 
     function Cube(id, context) {
       var type;
-      if (id == null) {
-        id = 1;
-      }
+      this.id = id != null ? id : 1;
       Cube.__super__.constructor.apply(this, arguments);
       type = CJ.Cube.Types.getById(id);
       CJ.instance.application.context.systems.model.addComponent(this.entity, {
-        type: "box"
+        type: "box",
+        castShadows: true,
+        receiveShadows: true
       });
       this.addContext(context);
     }
@@ -252,6 +272,8 @@
 
     Types.add(3, "Red Box", void 0);
 
+    Types.add(4, "Player Box", void 0);
+
     return Types;
 
   })();
@@ -277,6 +299,17 @@
 
   })(CJ.Unit);
 
+  CJ.Player = (function(_super) {
+    __extends(Player, _super);
+
+    function Player(context) {
+      Player.__super__.constructor.call(this, 4, context);
+    }
+
+    return Player;
+
+  })(CJ.Cube);
+
   level = new CJ.Level(0);
 
   level.setBlocks({
@@ -292,6 +325,18 @@
       },
       3: {
         0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
       }
     },
     1: {
@@ -305,6 +350,18 @@
         0: 1
       },
       3: {
+        0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
         0: 1
       }
     },
@@ -320,6 +377,18 @@
       },
       3: {
         0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
       }
     },
     3: {
@@ -334,10 +403,168 @@
       },
       3: {
         0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
+      }
+    },
+    4: {
+      0: {
+        0: 1
+      },
+      1: {
+        0: 1
+      },
+      2: {
+        0: 1
+      },
+      3: {
+        0: 1,
+        1: 2
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
+      }
+    },
+    5: {
+      0: {
+        0: 1
+      },
+      1: {
+        0: 1
+      },
+      2: {
+        0: 1
+      },
+      3: {
+        0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
+      }
+    },
+    6: {
+      0: {
+        0: 1
+      },
+      1: {
+        0: 1
+      },
+      2: {
+        0: 1
+      },
+      3: {
+        0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
+      }
+    },
+    7: {
+      0: {
+        0: 1
+      },
+      1: {
+        0: 1
+      },
+      2: {
+        0: 1
+      },
+      3: {
+        0: 1
+      },
+      4: {
+        0: 1
+      },
+      5: {
+        0: 1
+      },
+      6: {
+        0: 1
+      },
+      7: {
+        0: 1
       }
     }
   });
 
   CJ.Level.add(level);
+
+  pc.script.create("keyboard_handler", (function(_this) {
+    return function(context) {
+      var KeyboardHandler;
+      KeyboardHandler = (function() {
+        function KeyboardHandler(entity) {
+          this.entity = entity;
+        }
+
+        KeyboardHandler.prototype.initialize = function() {
+          this.controller = new pc.input.Controller(document);
+          this.controller.registerKeys('forward', [pc.input.KEY_UP, pc.input.KEY_W]);
+          this.controller.registerKeys('back', [pc.input.KEY_DOWN, pc.input.KEY_S]);
+          this.controller.registerKeys('left', [pc.input.KEY_LEFT, pc.input.KEY_A]);
+          this.controller.registerKeys('right', [pc.input.KEY_RIGHT, pc.input.KEY_D]);
+          return this.controller.registerKeys('jump', [pc.input.KEY_SPACE]);
+        };
+
+        KeyboardHandler.prototype.update = function(dt) {
+          var x, z;
+          x = 0;
+          z = 0;
+          if (this.controller.wasPressed('forward')) {
+            z = 1;
+          } else if (this.controller.wasPressed('back')) {
+            z = -1;
+          }
+          if (this.controller.wasPressed('left')) {
+            x = 1;
+          } else if (this.controller.wasPressed('right')) {
+            x = -1;
+          }
+          return this.entity.translate(x, 0, z);
+        };
+
+        return KeyboardHandler;
+
+      })();
+      return KeyboardHandler;
+    };
+  })(this));
 
 }).call(this);

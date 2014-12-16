@@ -1,9 +1,11 @@
 class CJ.Cube extends CJ.Unit
-  constructor: (id = 1, context)->
+  constructor: (@id = 1, context)->
     super
     type = CJ.Cube.Types.getById(id);
     CJ.instance.application.context.systems.model.addComponent @entity, {
       type: "box",
+      castShadows: true,
+      receiveShadows: true
     }
     @addContext context
 
@@ -36,3 +38,4 @@ class CJ.Cube.Types
   @add 1, "Blue Box",  undefined
   @add 2, "Green Box", undefined
   @add 3, "Red Box",   undefined
+  @add 4, "Player Box",   undefined

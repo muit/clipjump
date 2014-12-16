@@ -24,6 +24,7 @@ var source  = {
     'source/game/models/object.coffee',
     'source/game/models/cube.coffee',
     'source/game/models/light.coffee',
+    'source/game/models/player.coffee',
     'source/game/level.coffee',
     'source/game/map.coffee',
     'source/game/levels/*.coffee',
@@ -50,7 +51,7 @@ gulp.task('game', function()
   gulp.src(source.game)
     .pipe(concat(pkg.name.toLowerCase() +'.coffee'))
     .pipe(coffee().on('error', gutil.log))
-    .pipe(uglify({mangle: false}))//Comment this to debug
+    //.pipe(uglify({mangle: false}))//Comment this to debug
     .pipe(gulp.dest(libs))
     .pipe(connect.reload());
 });
