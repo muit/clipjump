@@ -33,7 +33,7 @@ class CJ.Game
     #Screen Setup
     @application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
     @application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
-
+    @application.start();
     @onload()
     @player.addScript "input_handler"
 

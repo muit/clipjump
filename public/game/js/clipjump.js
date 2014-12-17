@@ -47,6 +47,7 @@
       this.application = new pc.fw.Application(this.canvas);
       this.application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
       this.application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
+      this.application.start();
       this.onload();
       return this.player.addScript("input_handler");
     };
