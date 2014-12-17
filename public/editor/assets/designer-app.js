@@ -14147,7 +14147,7 @@ Ext.define("Ext.data.Connection", {
             if (async)
                 if (!me.isXdr) xhr.onreadystatechange = Ext.Function.bind(me.onStateChange, me, [request]);
             if (me.isXdr) me.processXdrRequest(request, xhr);
-            xhr.send(requestOptions.data);
+            //xhr.send(requestOptions.data);
             if (!async) return me.onComplete(request);
             return request
         } else {
@@ -62321,7 +62321,7 @@ Ext.define("PCD.view.DesignView", {
     store: "Entities",
     title: "Design View",
     items: [{
-        id: "canvas_3d",
+        id: "canvas",
         xtype: "canvas"
     }],
     initComponent: function() {
@@ -72552,57 +72552,47 @@ Ext.application({
         Ext.getStore("Repositories").getProxy().url = pc.string.format("/api/{0}/{1}/repositories", pc.config.depot_username, pc.config.depot_name);
         Ext.getStore("Properties").getProxy().url = pc.string.format("/api/{0}/{1}/properties/latest", pc.config.depot_username, pc.config.depot_name);
         PCD.model.Asset.getProxy().url = "/api/assets";
-        this.server = new pc.common.Corazon("/api", pc.config.corazon);
-        this.server.authorize(pc.config.username, function(server) {
-            self.authorizeStores(server.oauth);
-            server.users.getOne(pc.config.username,
-                function(user) {
-                    pc.designer.user = user
-                });
-            server.users.getOne(pc.config.depot_username, function(user) {
-                pc.designer.owner = user;
-                user.depots.getOne(pc.config.depot_name, function(depot) {
-                    if (messenger) {
-                        messenger.connect(pc.config.messenger.ws);
-                        messenger.on("connect", function() {
-                            this.authenticate(server.accessToken, "designer")
-                        });
-                        messenger.on("welcome", function(msg) {
-                            this.projectWatch(depot.id)
+
+        if (messenger) {
+            messenger.connect(pc.config.messenger.ws);
+            messenger.on("connect", function() {
+                this.authenticate(server.accessToken, "designer")
+            });
+            messenger.on("welcome", function(msg) {
+                this.projectWatch(depot.id)
+            })
+        }
+
+        var view = entitiesController.getDesignView();
+        var canvas = view.getCanvas();
+
+        self.designer = new pc.designer.Designer(canvas, {
+            mouse: new pc.input.Mouse(canvas),
+            touch: !!("ontouchstart" in window) ? new pc.input.TouchDevice(canvas) : null
+        });
+
+        //Start CJ here!
+        CJ.editor(self.designer);
+
+        self.designer.start();
+        entitiesController.setup(self.designer);
+        entitiesController.getAssetsStore().load({
+            callback: function() {
+                entitiesController.getRepositoriesStore().load({
+                    callback: function() {
+                        var width = parseInt(canvas.style.width);
+                        var height = parseInt(canvas.style.height);
+                        if (guid) {
+                            pc.designer.packId = guid;
+                            entitiesController.openPack(guid).then(function() {});
+                            self.designer.resize(width, height)
+                        } else entitiesController.newPack(depot, function(pack) {
+                            pc.designer.packId = self.getPackId();
+                            self.designer.resize(width, height)
                         })
                     }
-                    pc.designer.depot = depot;
-                    PC.proxy.OAuth.accessToken = server.accessToken;
-                    var view = entitiesController.getDesignView();
-                    var canvas =
-                        view.getCanvas();
-                    self.designer = new pc.designer.Designer(canvas, {
-                        depot: depot,
-                        mouse: new pc.input.Mouse(canvas),
-                        touch: !!("ontouchstart" in window) ? new pc.input.TouchDevice(canvas) : null
-                    });
-                    self.designer.start();
-                    entitiesController.setup(self.designer);
-                    entitiesController.getAssetsStore().load({
-                        callback: function() {
-                            entitiesController.getRepositoriesStore().load({
-                                callback: function() {
-                                    var width = parseInt(canvas.style.width);
-                                    var height = parseInt(canvas.style.height);
-                                    if (guid) {
-                                        pc.designer.packId = guid;
-                                        entitiesController.openPack(guid).then(function() {});
-                                        self.designer.resize(width, height)
-                                    } else entitiesController.newPack(depot, function(pack) {
-                                        pc.designer.packId = self.getPackId();
-                                        self.designer.resize(width, height)
-                                    })
-                                }
-                            })
-                        }
-                    })
                 })
-            })
+            }
         })
     },
     onExit: function() {

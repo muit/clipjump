@@ -20,23 +20,49 @@
     return console.log("ClipJump: " + message);
   };
 
+  CJ.start = function() {
+    var game;
+    game = new CJ.Game;
+    game.start();
+    return game;
+  };
+
+  CJ.editor = function(designer) {
+    var game;
+    game = new CJ.Game;
+    game.editor(designer);
+    return game;
+  };
+
   CJ.Game = (function() {
     var application;
 
     application = {};
 
-    function Game() {
+    function Game() {}
+
+    Game.prototype.start = function() {
       CJ.instance = this;
       this.canvas = document.getElementById("canvas");
       this.application = new pc.fw.Application(this.canvas);
+      this.application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
+      this.application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
       this.onload();
-    }
+      return this.player.addScript("input_handler");
+    };
+
+    Game.prototype.editor = function(application) {
+      this.application = application;
+      if (!this.application) {
+        throw new Error("Need an application object!");
+      }
+      CJ.instance = this;
+      return this.onload();
+    };
 
     Game.prototype.onload = function() {
       var light;
-      this.application.start();
-      this.application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
-      this.application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
+      CJ.log("Staring ClipJump");
       this.map = new CJ.Map;
       this.map.load(CJ.Level.get(0));
       light = new CJ.Light({
@@ -46,7 +72,6 @@
       light.translate(2, 2, 2);
       this.player = new CJ.Player;
       this.player.translate(1, 1, 1);
-      this.player.addScript("input_handler");
       this.camera = new pc.fw.Entity;
       this.application.context.systems.camera.addComponent(this.camera, {
         clearColor: new pc.Color(0.6, 0.6, 0.6)

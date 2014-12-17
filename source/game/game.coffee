@@ -9,22 +9,42 @@ window.CJ or= {};
 CJ.log = (message)->
   console.log "ClipJump: "+message
 
+CJ.start = ->
+  game = new CJ.Game
+  game.start()
+  return game
+
+CJ.editor = (designer)->
+  game = new CJ.Game
+  game.editor designer
+  return game
+
 class CJ.Game
   application = {}
 
   constructor: ->
+
+  start: ->
     CJ.instance = this
 
     @canvas = document.getElementById "canvas"
     @application = new pc.fw.Application @canvas
-    @onload()
 
-  onload: ->
-    @application.start()
     #Screen Setup
     @application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
     @application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
 
+    @onload()
+    @player.addScript "input_handler"
+
+  editor: (@application)->
+    if !@application then throw new Error("Need an application object!")
+    CJ.instance = this
+    @onload()
+
+
+  onload: ->
+    CJ.log "Staring ClipJump"
     #Load Map
     @map = new CJ.Map
     @map.load CJ.Level.get 0
@@ -38,7 +58,6 @@ class CJ.Game
     #Add Player
     @player = new CJ.Player
     @player.translate 1,1,1
-    @player.addScript "input_handler"
 
 
     #Camera

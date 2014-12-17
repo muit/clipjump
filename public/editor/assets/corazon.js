@@ -7,13 +7,13 @@ pc.extend(pc.common, function() {
             client: "http://playcanvas.com"
         };
         this.baseUrl = url;
-        this.authorized = false;
+        this.authorized = true;
         this.me = null;
         this.accessToken = null;
         if (options.oauth) {
             this.oauth = oauth;
         } else {
-            this.oauth = new pc.net.OAuth(options.endpoint, options.redirect, options.origin, options.client, "designer");
+            //this.oauth = new pc.net.OAuth(options.endpoint, options.redirect, options.origin, options.client, "designer");
         }
     };
 
@@ -23,6 +23,7 @@ pc.extend(pc.common, function() {
 
     Corazon.prototype.authorize = function (username, success) {
         this.username = username;
+        /*
         this.oauth.refreshAccessToken(function (token) {
             this.users = new UserApi("user", "users", this.baseUrl, this);
             this.users.getOne(this.username, function (user) {
@@ -32,6 +33,7 @@ pc.extend(pc.common, function() {
                 success(this);
             }.bind(this));
         }.bind(this));
+        */
     };
 
     var ResourceApi = function (name, plural, url, corazon) {
