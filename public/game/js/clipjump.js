@@ -344,30 +344,7 @@
 
     function Player(context) {
       Player.__super__.constructor.call(this, 4, context);
-      this.controller = new pc.input.Controller(document);
-      this.controller.registerKeys('forward', [pc.input.KEY_UP, pc.input.KEY_W]);
-      this.controller.registerKeys('back', [pc.input.KEY_DOWN, pc.input.KEY_S]);
-      this.controller.registerKeys('left', [pc.input.KEY_LEFT, pc.input.KEY_A]);
-      this.controller.registerKeys('right', [pc.input.KEY_RIGHT, pc.input.KEY_D]);
-      this.controller.registerKeys('jump', [pc.input.KEY_SPACE]);
     }
-
-    Player.prototype.update = function(dt) {
-      var x, z;
-      x = 0;
-      if (this.controller.wasPressed('forward')) {
-        z = 1;
-      } else if (this.controller.wasPressed('back')) {
-        z = -1;
-      }
-      z = 0;
-      if (this.controller.wasPressed('left')) {
-        x = 1;
-      } else if (this.controller.wasPressed('right')) {
-        x = -1;
-      }
-      return this.entity.translate(x, 0, z);
-    };
 
     return Player;
 

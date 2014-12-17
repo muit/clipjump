@@ -1,0 +1,88 @@
+body {
+    background-color: #263538;
+}
+
+.x-grid-tree-node-expanded .x-tree-icon-parent {
+    background-image: url("//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/fa/16x16/rocket.png");
+}
+
+.x-tree-icon-parent {
+    background-image: url("//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/fa/16x16/rocket.png");
+}
+
+.x-tree-icon-leaf {
+    background-image: url("//s3-eu-west-1.amazonaws.com/static.playcanvas.com/images/icons/fa/16x16/rocket.png");
+}
+
+/*
+ Override disabled item properties so they are not grey out as much
+*/
+.x-item-disabled {
+  opacity: 0.6;
+}
+.x-mask {
+  background: none;
+}
+
+#loading-spinner {
+    position: absolute;
+    top: 48%;
+    left: 48%;
+}
+
+#loading-spinner div {
+/*    font-family: Tahoma, Arial Verdana, sans-serif;
+    */
+    padding-top: 20px;
+    color: #FCFEFC;
+    font-size: 16px;
+    font-family:"Proxima Nova Thin", 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-size-adjust:0.488;
+    font-weight:normal;
+    font-style:normal;
+}
+
+.designer-loader {
+    height: 64px;
+    width: 64px;
+}
+
+.pcd-centered-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.pc-component-editor-help {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  color: rgb(200,200,200);
+}
+
+#canvas_3d {
+    cursor: default;
+}
+
+.pcd-dashboard-button.x-btn{
+    background-color: rgb(73, 73, 73);
+    background-image : none;
+    border: 1px solid rgb(73, 73, 73);
+}
+
+.pcd-dashboard-button.x-btn.x-btn-default-toolbar-small-over {
+    background-image : none;
+    background-color: #d53d16;
+    border: 1px solid #d53d16;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -ms-box-shadow: none;
+    box-shadow: none;
+
+    transition: background-color 250ms linear, border 250ms linear;
+}
+
+.pcd-dashboard-button.x-btn-inner {
+    font-size: 14px;
+}

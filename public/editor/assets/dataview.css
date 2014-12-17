@@ -1,0 +1,40 @@
+/* CSS for DataViews such as the AssetChooser */
+
+.pcd-dataview-item {
+    float: left;
+    width: 96px;
+    margin: 4px;
+    padding: 1px;
+}
+
+.pcd-dataview-item img {
+    display: block;
+    height: 64px;
+    width: 64px;
+    margin: 4px 16px 4px 16px;
+}
+
+.pcd-dataview-item span {
+    text-align: center;
+    display: block;
+    width: 96px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.pcd-dataview-item.x-view-over {
+    border: 1px solid #393d46;
+    background-color: #393d46;
+    padding: 0px;
+}
+
+.pcd-dataview-item.x-item-selected {
+    border: 1px solid #4b5367;
+    background-color: #4b5367;
+    padding: 0px;
+}
+
+.pcd-dataview-item-label {
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}

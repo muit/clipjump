@@ -1,0 +1,33 @@
+.clientdisplay-client {
+    width: 36px;
+    height: 36px;
+
+    padding: 2px;
+    margin-left: 4px;
+
+    overflow-x: hidden;
+
+    float: left;
+}
+
+.clientdisplay-client img {
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+.clientdisplay-client-username {
+}
+
+.errordisplay-heading {
+    padding: 2px 4px;
+    background: #ee9090 no-repeat 4px 2px;
+    background-image: url(//static.playcanvas.com/images/icons/16x16/error.png);
+}
+
+.errordisplay-heading p {
+    margin-left: 20px;
+}
+
+.errordisplay-error {
+    margin: 2px;
+}

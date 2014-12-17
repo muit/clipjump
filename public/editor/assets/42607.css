@@ -1,0 +1,40 @@
+
+@font-face {
+    font-family: 'Proxima Nova Thin';
+    src: url('http://f.fontdeck.com/f/1/NXUtYWZ3VE0AA48gmBDioGX76xfoFRojiNE+FlUt/D03PZBabKpLR/YauJw7HZTQ0oacEAVnOMp04o4FhZ9UvoMIA3fAYq7BVaE.eot');
+    src: url('http://f.fontdeck.com/f/1/NXUtYWZ3VE0AA48gmBDioGX76xfoFRojiNE+FlUt/D03PZBabKpLR/YauJw7HZTQ0oacEAVnOMp04o4FhZ9UvoMIA3fAYq7BVaE.eot?') format('embedded-opentype'),
+    url('http://f.fontdeck.com/f/1/NXUtYWZ3VE0AA48gmBDioGX76xfoFRojiNE+FlUt/D03PZBabKpLR/YauJw7HZTQ0oacEAVnOMp04o4FhZ9UvoMIA3fAYq7BVaE.woff') format('woff'),
+    url('http://f.fontdeck.com/f/1/NXUtYWZ3VE0AA48gmBDioGX76xfoFRojiNE+FlUt/D03PZBabKpLR/YauJw7HZTQ0oacEAVnOMp04o4FhZ9UvoMIA3fAYq7BVaE.ttf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Regular';
+    src: url('http://f.fontdeck.com/f/1/eTNaekxXZ1kAA8GDL4VFvsH3nU+HfGzsvWDMJrptXciWklPS+EbvGKEgcS9xr8J2j9BU/PoGeJwSXh/NzWPZ3omLslLzuvzvT7g.eot');
+    src: url('http://f.fontdeck.com/f/1/eTNaekxXZ1kAA8GDL4VFvsH3nU+HfGzsvWDMJrptXciWklPS+EbvGKEgcS9xr8J2j9BU/PoGeJwSXh/NzWPZ3omLslLzuvzvT7g.eot?') format('embedded-opentype'),
+    url('http://f.fontdeck.com/f/1/eTNaekxXZ1kAA8GDL4VFvsH3nU+HfGzsvWDMJrptXciWklPS+EbvGKEgcS9xr8J2j9BU/PoGeJwSXh/NzWPZ3omLslLzuvzvT7g.woff') format('woff'),
+    url('http://f.fontdeck.com/f/1/eTNaekxXZ1kAA8GDL4VFvsH3nU+HfGzsvWDMJrptXciWklPS+EbvGKEgcS9xr8J2j9BU/PoGeJwSXh/NzWPZ3omLslLzuvzvT7g.ttf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Bold';
+    src: url('http://f.fontdeck.com/f/1/UlFJajB0aHoAA36IMi1lI+dwYzQqiG/DooOnqSoLL4Pf0ewoB2/nkpW59D5lKHNC+op9lDtK34KukiMLB/Jh6UeJHMZtkmfTtvE.eot');
+    src: url('http://f.fontdeck.com/f/1/UlFJajB0aHoAA36IMi1lI+dwYzQqiG/DooOnqSoLL4Pf0ewoB2/nkpW59D5lKHNC+op9lDtK34KukiMLB/Jh6UeJHMZtkmfTtvE.eot?') format('embedded-opentype'),
+    url('http://f.fontdeck.com/f/1/UlFJajB0aHoAA36IMi1lI+dwYzQqiG/DooOnqSoLL4Pf0ewoB2/nkpW59D5lKHNC+op9lDtK34KukiMLB/Jh6UeJHMZtkmfTtvE.woff') format('woff'),
+    url('http://f.fontdeck.com/f/1/UlFJajB0aHoAA36IMi1lI+dwYzQqiG/DooOnqSoLL4Pf0ewoB2/nkpW59D5lKHNC+op9lDtK34KukiMLB/Jh6UeJHMZtkmfTtvE.ttf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Proxima Nova Light';
+    src: url('http://f.fontdeck.com/f/1/NnJGeWItdzYAA5EykrSmYpCn70Wi4n0VVqsaIZSKzN63tFpnT7uO8pX1UJJW6/18MXw1LxoQ/akDVifaxumGEcEClWgJu9kLgYY.eot');
+    src: url('http://f.fontdeck.com/f/1/NnJGeWItdzYAA5EykrSmYpCn70Wi4n0VVqsaIZSKzN63tFpnT7uO8pX1UJJW6/18MXw1LxoQ/akDVifaxumGEcEClWgJu9kLgYY.eot?') format('embedded-opentype'),
+    url('http://f.fontdeck.com/f/1/NnJGeWItdzYAA5EykrSmYpCn70Wi4n0VVqsaIZSKzN63tFpnT7uO8pX1UJJW6/18MXw1LxoQ/akDVifaxumGEcEClWgJu9kLgYY.woff') format('woff'),
+    url('http://f.fontdeck.com/f/1/NnJGeWItdzYAA5EykrSmYpCn70Wi4n0VVqsaIZSKzN63tFpnT7uO8pX1UJJW6/18MXw1LxoQ/akDVifaxumGEcEClWgJu9kLgYY.ttf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+}
