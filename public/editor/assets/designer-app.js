@@ -72575,10 +72575,10 @@ Ext.application({
         CJ.editor(self.designer);
 
         self.designer.start();
-        entitiesController.setup(self.designer);
+        //entitiesController.setup(self.designer);
+        /*
         entitiesController.getAssetsStore().load({
-            callback: function() {
-                entitiesController.getRepositoriesStore().load({
+            callback: function() een                entitiesController.getRepositoriesStore().load({
                     callback: function() {
                         var width = parseInt(canvas.style.width);
                         var height = parseInt(canvas.style.height);
@@ -72594,6 +72594,7 @@ Ext.application({
                 })
             }
         })
+        */
     },
     onExit: function() {
         if (pc.config.realtimeEnabled) {

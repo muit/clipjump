@@ -25,5 +25,5 @@ CJ.Script.create "input_handler", ()=>
       else if @controller.isPressed 'right'
         x = 1
 
-      @unit.entity.translate x*@speed*dt, 0, z*@speed*dt
+      @unit.translate x*@speed*dt, 0, z*@speed*dt
   return InputHandler
