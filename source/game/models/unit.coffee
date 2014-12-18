@@ -13,5 +13,11 @@ class CJ.Unit
   translate: (x, y, z)->
     @entity.translate x,y,z
 
-  addScript: (name)->
-    CJ.Script.add name, this
+  translateLocal: (x, y, z)->
+    @entity.translateLocal x,y,z
+
+  lookAt: (x,y,z)->
+    @entity.lookAt x,y,z
+
+  addScript: (name, attrs)->
+    CJ.Script.add name, @entity, attrs

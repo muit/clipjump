@@ -5,15 +5,11 @@ class CJ.Script
   @create: (name, callback)->
     @_list[name] = callback()
 
-  @add: (name, unit)->
+  @add: (name, unit, attrs)->
     script = new @_list[name] unit
-    script.initialize()
+    script.initialize attrs
     @scripts_loaded.push script
     return script
-
-  @initialize: ->
-    for script in @scripts_loaded
-      script.initialize()
 
   @update: (dt)->
     for script in @scripts_loaded

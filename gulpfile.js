@@ -25,6 +25,7 @@ var source  = {
     'source/game/models/cube.coffee',
     'source/game/models/light.coffee',
     'source/game/models/player.coffee',
+    'source/game/models/camera.coffee',
     'source/game/level.coffee',
     'source/game/map.coffee',
     'source/game/levels/*.coffee',
