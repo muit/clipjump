@@ -28,6 +28,8 @@ CJ.Script.create "camera_movement", ()=>
         return
       @obj_x = @distance*Math.round Math.sin @degrees
       @obj_z = @distance*Math.round Math.cos @degrees
+      
+      @player.call "flip_controls", @dir
 
     update: (dt)->
       position = @camera.getLocalPosition()
