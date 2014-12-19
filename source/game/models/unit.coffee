@@ -2,7 +2,8 @@ class CJ.Unit
   entity = {}
   @app = undefined
   constructor: ->
-    @entity = new pc.fw.Entity
+    @entity or= new pc.fw.Entity
+    @events or= {}
 
   addContext: (context)->
     if !context
@@ -16,8 +17,24 @@ class CJ.Unit
   translateLocal: (x, y, z)->
     @entity.translateLocal x,y,z
 
+  setLocalPosition: (x, y, z)->
+    @entity.setLocalPosition x,y,z
+
+  setPosition: (x, y, z)->
+    @entity.setPosition x,y,z
+
+  getLocalRotation: ->
+    return @entity.getLocalRotation()
+
   lookAt: (x,y,z)->
     @entity.lookAt x,y,z
 
   addScript: (name, attrs)->
     CJ.Script.add name, @entity, attrs
+
+
+  on: (name, callback)->
+    @events[name] = callback
+
+  call: (name, attrs)->
+    return @events[name](attrs)
