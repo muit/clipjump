@@ -36,8 +36,5 @@
     "gulp-util": "*"
   },
   "private": false,
-  "subdomain": "clipjump",
-  "scripts": {
-    "start": "node bin/server.js"
-  }
+  "subdomain": "clipjump"
 }
