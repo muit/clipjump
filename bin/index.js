@@ -1,1 +1,1 @@
-require("./core.js")(true);
+require("./core.js")({env: "production"});

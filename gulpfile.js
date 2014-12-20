@@ -76,12 +76,12 @@ gulp.task('init', function()
 gulp.task('default', function()
 {
   gulp.run(['init']);
-  new require("./bin/core")(true);
+  new require("./bin/core")({env: "production"});
 });
 
 gulp.task('dev', function()
 {
   gulp.run(['init']);
-  new require("./bin/core")(false);
+  new require("./bin/core")({env: "development"});
   gulp.watch(source.game, ['game']);
 });

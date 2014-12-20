@@ -7,12 +7,12 @@
   ],
   "license": "MIT",
   "scripts": {
-    "postinstall": "node_modules/.bin/gulp init",
-    "start": "node ./bin/index.js",
+    "start": "gulp",
     "test": "node_modules/.bin/mocha"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "0.10.x",
+    "npm": ">= 1.0.0"
   },
   "repository": {
     "type": "git",
