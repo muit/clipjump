@@ -8,7 +8,7 @@ CJ.Script.create "camera_movement", ()=>
     initialize: (attrs)->
       #Attributes
       @height   = attrs.height or 2
-      @distance = attrs.distance or 10
+      @distance = attrs.distance or 6
       @speed    = attrs.speed or 3
       @player   = attrs.player
 
@@ -18,10 +18,10 @@ CJ.Script.create "camera_movement", ()=>
       @camera.lookAt @player
 
     onKeyDown: (e)->
-      if e.key == pc.input.KEY_O
+      if e.key == pc.input.KEY_P
         @rads -= Math.PI/2
         @dir = false
-      else if e.key == pc.input.KEY_P
+      else if e.key == pc.input.KEY_O
         @rads += Math.PI/2
         @dir = true
       else
