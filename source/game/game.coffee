@@ -63,7 +63,6 @@ class CJ.Game
     @camera = new CJ.Camera @player.entity
     @camera.addScript "camera_movement", {player: @player}
 
-
     @application.on "update", @update
 
 
