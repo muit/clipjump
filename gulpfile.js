@@ -76,8 +76,12 @@ gulp.task('init', function()
 gulp.task('default', function()
 {
   gulp.run(['init']);
+  new require("./bin/core")(80);
+});
 
-  new require("./bin/core")();
-
+gulp.task('dev', function()
+{
+  gulp.run(['init']);
+  new require("./bin/core")(3000);
   gulp.watch(source.game, ['game']);
 });
