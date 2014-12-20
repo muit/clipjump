@@ -8,7 +8,7 @@
   "license": "MIT",
   "main": "./bin/core.js",
   "scripts": {
-    "start": "node_modules/.bin/gulp",
+    "start": "gulp",
     "test": "node_modules/.bin/mocha"
   },
   "engines": {
