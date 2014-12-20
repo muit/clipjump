@@ -1,13 +1,14 @@
 {
   "name": "ClipJump",
-  "version": "1.0.0-2",
+  "version": "1.0.0-8",
   "description": "It's a secret.",
   "contributors": [
     "Miguel Fernandez <miguel_3c@hotmail.com>"
   ],
   "license": "MIT",
   "scripts": {
-    "start": "node node_modules/gulp/bin/gulp",
+    "postinstall": "node_modules/.bin/gulp init",
+    "start": "node ./bin/index.js",
     "test": "node_modules/.bin/mocha"
   },
   "engines": {
@@ -25,7 +26,7 @@
     "serve-me": "0.6.0-a"
   },
   "devDependencies": {
-    "gulp": "*",
+    "gulp": "3.8.10",
     "gulp-coffee": "*",
     "gulp-concat": "*",
     "gulp-connect": "*",
