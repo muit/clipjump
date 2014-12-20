@@ -5,17 +5,18 @@
   "contributors": [
     "Miguel Fernandez <miguel_3c@hotmail.com>"
   ],
-  "license": "GPL",
-  "main": "./bin/server.js",
-  "bin": {
-    "clip": "./bin/server.js"
+  "license": "MIT",
+  "main": "./bin/core.js",
+  "scripts": {
+    "start": "node_modules/.bin/gulp"
+    "test": "node_modules/.bin/mocha"
   },
   "engines": {
     "node": "0.10.31"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/pixeldream/clipjump.git"
   },
   "bugs": {
     "url": "",

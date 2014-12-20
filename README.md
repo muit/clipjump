@@ -11,7 +11,7 @@ do a pull request on the master branch.
 If it is something else create a new (or existing) feature branch (eg: `feature/MY_FEAT`)
 and issue a pull request on that.
 
-If unsure, create an [issue](https://github.com/muit/clipjump/issues) to discuss.
+If unsure, create an [issue](https://github.com/pixeldream/clipjump/issues) to discuss.
 
 Please ensure that:
 
