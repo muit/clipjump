@@ -1,18 +1,17 @@
 {
   "name": "ClipJump",
-  "version": "1.0.0",
+  "version": "1.0.0-2",
   "description": "It's a secret.",
   "contributors": [
     "Miguel Fernandez <miguel_3c@hotmail.com>"
   ],
   "license": "MIT",
-  "main": "./bin/core.js",
   "scripts": {
-    "start": "gulp",
+    "start": "node node_modules/gulp/bin/gulp",
     "test": "node_modules/.bin/mocha"
   },
   "engines": {
-    "node": "0.10.31"
+    "node": "0.10.x"
   },
   "repository": {
     "type": "git",
