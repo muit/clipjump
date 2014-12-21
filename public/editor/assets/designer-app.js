@@ -67627,12 +67627,12 @@ Ext.define("PCD.view.AssetExplorer", {
                 }
             }, {
                 xtype: "button",
-                text: "ALL",
+                text: "CUBE",
                 tooltipType: "title",
                 toggleGroup: "filters"
             }, " ", {
                 xtype: "button",
-                text: "MODEL",
+                text: "MATERIALS",
                 tooltipType: "title",
                 toggleGroup: "filters"
             },
@@ -67643,7 +67643,7 @@ Ext.define("PCD.view.AssetExplorer", {
                 toggleGroup: "filters"
             }, " ", {
                 xtype: "button",
-                text: "MATERIAL",
+                text: "MAP",
                 tooltipType: "title",
                 toggleGroup: "filters"
             }, {
