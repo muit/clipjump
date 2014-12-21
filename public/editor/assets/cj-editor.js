@@ -1,6 +1,11 @@
 CJ = CJ || {}
 CJ.Editor = function(){
   this.loadComponents();
+  CJ.Editor.log("Started");
+};
+
+CJ.Editor.log = function(message){
+  console.log("CJ Designer: "+message);
 };
 
 CJ.Editor.prototype.loadComponents = function()
@@ -66,7 +71,7 @@ CJ.Editor.prototype.loadComponents = function()
       if(this._showing_type == "materials" || this._showing_type == "all")
         for(i = 0, len = this.materials.length; i<len; i++){
           unit = {
-            name: this.cubes[i].name,
+            name: this.materials[i].name,
             element: CJ.Editor.Text.get("ASSET_EXPLORER_MATERIAL", {id: i, name: this.materials[i].name})
           };
           this._showing.push(unit);
@@ -76,7 +81,7 @@ CJ.Editor.prototype.loadComponents = function()
       if(this._showing_type == "maps" || this._showing_type == "all")
         for(i = 0, len = this.maps.length; i<len; i++){
           unit = {
-            name: this.cubes[i].name,
+            name: this.maps[i].name,
             element: CJ.Editor.Text.get("ASSET_EXPLORER_MAP", {id: i, name: this.maps[i].name})
           };
           this._showing.push(unit);
