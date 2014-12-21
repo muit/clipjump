@@ -101,7 +101,7 @@ CJ.Editor.prototype.loadComponents = function()
       this._show();
     },
     addMaterial: function(asset){
-      this.cubes.push(asset);
+      this.materials.push(asset);
       this._show();
     },
     addMap: function(asset){
