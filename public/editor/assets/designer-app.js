@@ -62832,7 +62832,7 @@ Ext.define("PCD.view.component.AssetChooser", {
         xtype: "box",
         margin: "5 0 0 10",
         autoEl: {
-            html: pc.string.format('No assets available. Upload some <a href="./local_project/assets" target="./local_project/assets">here</a>.',
+            html: pc.string.format('No assets available. Upload some <a href="../game/assets" target="../game/assets">here</a>.',
                 pc.config.depot_username, pc.config.depot_name)
         }
     }, {
@@ -63412,7 +63412,7 @@ Ext.define("PCD.view.component.ScriptPicker", {
                             if (store.getCount() > 0) {
                                 var repo = store.getAt(0);
                                 var current = repo.get("current");
-                                self.store.getProxy().url = common.string.format("/api./local_project/repositories/{2}/sourcefiles", pc.config.depot_username, pc.config.depot_name, current);
+                                self.store.getProxy().url = common.string.format("/api/{0}/{1}/repositories/{2}/sourcefiles", pc.config.depot_username, pc.config.depot_name, current);
                                 self.store.load()
                             }
                         })
@@ -67714,7 +67714,7 @@ Ext.define("PCD.view.AssetExplorer", {
         xtype: "box",
         margin: "5 0 0 10",
         autoEl: {
-            html: pc.string.format('No assets available. Drag and drop some assets or upload some <a href="./local_project/assets" target="./local_project/assets">here</a>.', pc.config.depot_username, pc.config.depot_name)
+            html: pc.string.format('No assets available. Drag and drop some assets or upload some <a href="../game/assets" target="../game/assets">here</a>.', pc.config.depot_username, pc.config.depot_name)
         },
         hidden: true
     }, {
@@ -68080,7 +68080,7 @@ Ext.define("PCD.view.CodeView", {
         repositories.load(function() {
             if (repositories.getCount() > 0) {
                 var id = repositories.getAt(0).get("current");
-                this.store.getProxy().url = common.string.format("/api./local_project/repositories/{2}/sourcefiles",
+                this.store.getProxy().url = common.string.format("/api/{0}/{1}/repositories/{2}/sourcefiles",
                     pc.config.depot_username, pc.config.depot_name, id);
                 var enabledFilters = this.store.filters.getRange().filter(function(f) {
                     if (!f.disabled) {
@@ -70130,7 +70130,7 @@ Ext.define("PCD.model.Repository", {
         var repo = this.get(service);
         var serviceUsername = repo.username;
         var serviceRepo = repo.repo;
-        return pc.string.format("/api/code./local_project/{2}/{3}/{4}/{5}/",
+        return pc.string.format("/api/code/{0}/{1}/{2}/{3}/{4}/{5}/",
             owner, projectName, "master", SERVICES[service], serviceUsername, serviceRepo)
     }
 });
@@ -71226,7 +71226,7 @@ Ext.define("PCD.controller.Entities", {
                     var e = resourceId;
                     var u = pc.config.depot_username;
                     var d = pc.config.depot_name;
-                    var uri = new pc.URI(pc.string.format("./local_project/designer/bootstrap", u, d));
+                    var uri = new pc.URI(pc.string.format("/{0}/{1}/designer/bootstrap", u, d));
                     uri.setQuery({
                         e: e,
                         repository: type === "online" ? "true" : "false"
@@ -71511,7 +71511,7 @@ Ext.define("PCD.controller.Entities", {
         var menu = this.mainmenu.addMenu("DASHBOARD",
             true);
         menu.ownerButton.on("click", function() {
-            window.location = pc.string.format("./local_project", pc.config.depot_username, pc.config.depot_name)
+            window.location = pc.string.format("/{0}/{1}", pc.config.depot_username, pc.config.depot_name)
         });
         menu.ownerButton.addCls("pcd-dashboard-button");
         menu.ownerButton.btnWrap.removeCls("x-btn-arrow");
@@ -71587,8 +71587,8 @@ Ext.define("PCD.controller.Entities", {
         var eStore = Ext.getStore("Entities");
         var udStore = Ext.getStore("UserData");
         var promises = [];
-        PCD.model.UserData.proxy.url = pc.string.format("/api./local_project/packs/{2}/userdata", pc.config.depot_username, pc.config.depot_name, guid);
-        Ext.getStore("DesignerSettings").getProxy().url = pc.string.format("/api./local_project/packs/{2}/designer_settings/{3}", pc.config.depot_username, pc.config.depot_name, guid, pc.config.username);
+        PCD.model.UserData.proxy.url = pc.string.format("/api/{0}/{1}/packs/{2}/userdata", pc.config.depot_username, pc.config.depot_name, guid);
+        Ext.getStore("DesignerSettings").getProxy().url = pc.string.format("/api/{0}/{1}/packs/{2}/designer_settings/{3}", pc.config.depot_username, pc.config.depot_name, guid, pc.config.username);
         promises.push(udStore.connect({
             username: pc.config.depot_username,
             depot: pc.config.depot_name,
@@ -72415,8 +72415,8 @@ Ext.define("PCD.controller.Entities", {
             file: file,
             s3Name: filename,
             id: existingAssetIndex >= 0 ? assets[existingAssetIndex].get("id") : null,
-            signServiceUrl: pc.string.format("./local_project/sign_s3_asset", pc.config.depot_username, pc.config.depot_name),
-            createAssetUrl: pc.string.format("./local_project/assets/create",
+            signServiceUrl: pc.string.format("/{0}/{1}/sign_s3_asset", pc.config.depot_username, pc.config.depot_name),
+            createAssetUrl: pc.string.format("/{0}/{1}/assets/create",
                 pc.config.depot_username, pc.config.depot_name),
             onProgress: function(progress) {
                 progress /= 100;
@@ -72530,7 +72530,7 @@ Ext.Loader.setConfig(config);
 Ext.setGlyphFontFamily("FontAwesome");
 Ext.application({
     name: "PCD",
-    appFolder: "/script/designer/src/app",
+    appFolder: "../game",
     models: ["Pack", "UserData"],
     stores: ["Packs", "Entities"],
     controllers: ["Entities"],
@@ -72548,12 +72548,12 @@ Ext.application({
         this.undo = new pc.common.UndoManager;
         this.scriptAttributesParser = new pc.common.ScriptAttributesParser;
         if (pc.config.prerender) return;
-        PCD.model.Entity.getProxy().url = pc.string.format("/api./local_project/packs", pc.config.depot_username, pc.config.depot_name);
-        PCD.model.Pack.getProxy().url = pc.string.format("/api./local_project/packs", pc.config.depot_username, pc.config.depot_name);
+        PCD.model.Entity.getProxy().url = pc.string.format("/api/{0}/{1}/packs", pc.config.depot_username, pc.config.depot_name);
+        PCD.model.Pack.getProxy().url = pc.string.format("/api/{0}/{1}/packs", pc.config.depot_username, pc.config.depot_name);
         Ext.getStore("Assets").getProxy().url = pc.string.format("/api/projects/{0}/assets",
             pc.config.depot_id);
-        Ext.getStore("Repositories").getProxy().url = pc.string.format("/api./local_project/repositories", pc.config.depot_username, pc.config.depot_name);
-        Ext.getStore("Properties").getProxy().url = pc.string.format("/api./local_project/properties/latest", pc.config.depot_username, pc.config.depot_name);
+        Ext.getStore("Repositories").getProxy().url = pc.string.format("/api/{0}/{1}/repositories", pc.config.depot_username, pc.config.depot_name);
+        Ext.getStore("Properties").getProxy().url = pc.string.format("/api/{0}/{1}/properties/latest", pc.config.depot_username, pc.config.depot_name);
         PCD.model.Asset.getProxy().url = "/api/assets";
 
         if (messenger) {
