@@ -10,12 +10,23 @@ CJ.Editor.log = function(message){
 
 CJ.Editor.prototype.loadComponents = function()
 {
+  var editor = this;
+
   this.mainMenu        = {
     element: document.getElementById("mainmenu"),
   };
 
-  this.packExplorer    = {
+  this.hiercharyExplorer    = {
     element: document.getElementById("packexplorer"),
+    _content: document.getElementById("treeview-1012"),
+
+    setTitle: function(text){
+      document.getElementById("packexplorer_header_hd-textEl").innerHTML = text;
+    },
+
+    loadHierarchy: function(){
+
+    }
   };
 
   this.assetExplorer   = {
@@ -112,6 +123,10 @@ CJ.Editor.prototype.loadComponents = function()
     addMap: function(asset){
       this.maps.push(asset);
       this._show();
+    },
+
+    loadMap: function(map){
+      editor.hiercharyExplorer.setTitle("Hierchary of '" + map.name +"'");
     }
   };
   this.assetExplorer.init();
@@ -130,9 +145,7 @@ CJ.Editor.prototype.loadComponents = function()
       image: document.getElementById("image-1275"),
       text: document.getElementById("tbtext-1273"),
     },
-    createLoading: function(){
 
-    },
     setLoading: function(value, text){
       if(!this.loading.image || !this.loading.text)
         this.createLoading();
@@ -153,10 +166,13 @@ CJ.Editor.Text = {
     return text;
   },
 
-  ASSET_EXPLORER_EMPTY:    'No assets available. Drag and drop some assets here.',
-  ASSET_EXPLORER_CUBE:     '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/asset.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
-  ASSET_EXPLORER_MATERIAL: '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/material.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
-  ASSET_EXPLORER_MAP:      '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/asset.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
+  HIERCHARY_ELEMENT_FATHER:   '<tr id="treeview-1012-record" data-boundview="treeview-1012" data-recordid="%id%" data-recordindex="%index%" class="x-grid-row x-grid-tree-node-expanded x-grid-data-row" tabindex="-1"><td class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1011 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn"><div unselectable="on" class="x-grid-cell-inner" style="text-align:left;"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-elbow-end-plus x-tree-expander"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text">%name%</span></div></td></tr>',
+  HIERCHARY_ELEMENT_CHILDREN: '<tr id="treeview-1012-record" data-boundview="treeview-1012" data-recordid="%id%" data-recordindex="%index%" class="x-grid-row  x-grid-data-row" tabindex="-1"><td class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1011 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn"><div unselectable="on" class="x-grid-cell-inner" style="text-align:left;"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-elbow-empty"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-elbow"><img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text">%name%</span></div></td></tr>',
+  HIERCHARY_TABULATION:       '<img src="data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" class="x-tree-elbow-empty">',
+  ASSET_EXPLORER_EMPTY:       'No assets available. Drag and drop some assets here.',
+  ASSET_EXPLORER_CUBE:        '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/asset.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
+  ASSET_EXPLORER_MATERIAL:    '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/material.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
+  ASSET_EXPLORER_MAP:         '<div class="pcd-dataview-item"><img src="./assets/images/icons/64x64/asset.png"><span class="pcd-dataview-item-label" id="%id%">%name%</span></div>',
 };
 
 
