@@ -13,6 +13,9 @@ class CJ.Unit
   translate: (x, y, z)->
     @entity.translate x,y,z
 
+  rotateLocal: (x,y,z)->
+    @entity.rotateLocal x,y,z
+
   translateLocal: (x, y, z)->
     @entity.translateLocal x,y,z
 

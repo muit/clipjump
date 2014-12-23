@@ -19,15 +19,19 @@ var libs  = './public/game/js';
 var source  = {
   game:   [
     'source/game/*.coffee',
+
     'source/game/models/unit.coffee',
     'source/game/models/entity.coffee',
     'source/game/models/object.coffee',
     'source/game/models/cube.coffee',
     'source/game/models/light.coffee',
-    'source/game/models/player.coffee',
     'source/game/models/camera.coffee',
+
     'source/game/level.coffee',
     'source/game/map.coffee',
+
+    'source/game/models/cubes/*.coffee',
+    'source/game/models/others/*.coffee',
     'source/game/levels/*.coffee',
     'source/game/scripts/*.coffee'
   ],

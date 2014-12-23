@@ -45,14 +45,20 @@ class CJ.Game
 
   onload: ->
     CJ.log "Staring ClipJump"
+    @application.context.scene.ambientLight = new pc.Color(0.2, 0.2, 0.2);
+
     #Load Map
     @map = new CJ.Map
     @map.load CJ.Level.get 0
 
     @light = new CJ.Light {
-      type: "point",
-      castShadows: true
+      type: "directional",
+      castShadows: true,
+      color: new pc.Color(1, 1, 1),
+      castShadows: true,
+      shadowResolution: 2048
     }
+    @light.rotateLocal 45,30,0
     @light.translate 2,2,2
 
     #Add Player
