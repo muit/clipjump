@@ -7,8 +7,8 @@ CJ.Script.create "camera_movement", ()=>
 
     initialize: (attrs)->
       #Attributes
-      @height   = attrs.height or 2
-      @distance = attrs.distance or 6
+      @height   = attrs.height or 5
+      @distance = attrs.distance or 13
       @speed    = attrs.speed or 3
       @player   = attrs.player
 
