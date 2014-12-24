@@ -12,7 +12,6 @@ class CJ.Cube extends CJ.Unit
         type: "box",
         halfExtents: new pc.Vec3(0.5, 0.5, 0.5)
     });
-    console.log context
     @addContext context
 
   setColor: (color)->
@@ -27,7 +26,6 @@ class CJ.Cube extends CJ.Unit
 
   @new: (id, attrs)->
     r_class = (CJ.Cube.Types.getClass CJ.Cube.Types.getById id)
-    console.log r_class
     return new r_class attrs
 
 
@@ -60,8 +58,10 @@ class CJ.Cube.Types
     return CJ.Cube[type.r_class]
 
   # _all types of blocks
-  @add 0, "Nothing",    undefined,      undefined
-  @add 1, "Blue Box",   "Blue",   undefined
-  @add 2, "Green Box",  "Green",  undefined
-  @add 3, "Red Box",    "Red",    undefined
-  @add 4, "Player Box", "Player", undefined
+  @add 0, "Nothing",    undefined, undefined
+  @add 1, "Blue Box",   "Blue",    undefined
+  @add 2, "Green Box",  "Green",   undefined
+  @add 3, "Red Box",    "Red",     undefined
+  @add 4, "Player Box", "Player",  undefined
+  @add 5, "Point Box",  "Point",   undefined
+  @add 6, "End Box",    "End",     undefined
