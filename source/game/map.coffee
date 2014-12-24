@@ -15,5 +15,8 @@ class CJ.Map
     for entity in map.entity._children
       entity.destroy()
 
+  update: (dt)->
+
+
 
 
