@@ -8,7 +8,7 @@ class CJ.Map
       for x, line of plane
         for y, cubeId of line
           if cubeId != 0
-            cube = new CJ.Cube cubeId, @entity
+            cube = CJ.Cube.new cubeId, @entity
             cube.translate x, y, z
 
   reset: ->

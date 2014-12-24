@@ -160,7 +160,7 @@ CJ.Editor.Text = {
   get: function(name, attrs){
     var text = this[name];
     if(attrs && typeof attrs == "object")
-      for(rep in attrs){
+      for(var rep in attrs){
         text = text.replace("%"+rep+"%", attrs[rep]);
       }
     return text;
