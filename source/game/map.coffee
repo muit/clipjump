@@ -1,21 +1,21 @@
-class CJ.Map
-  constructor: ->
-    @entity = new pc.fw.Entity
-    CJ.instance.application.context.root.addChild @entity
+class CJ.Map extends CJ.Unit
+  constructor: (level, attrs)->
+    super
+    addContext()
+    if level
+      @load level, attrs
 
-  load: (@level) ->
-    for z, plane of @level.blocks
-      for x, line of plane
-        for y, cubeId of line
-          if cubeId != 0
-            cube = CJ.Cube.new cubeId, @entity
-            cube.translate x, y, z
+
+  load: (level, attrs) ->
+    @level = new level this, attrs
+    @level.load()
 
   reset: ->
-    for entity in map.entity._children
-      entity.destroy()
+    @level.reset()
 
   update: (dt)->
+    @level.update dt
+
 
 
 

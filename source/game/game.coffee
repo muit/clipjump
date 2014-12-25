@@ -47,12 +47,11 @@ class CJ.Game
       @onload()
 
   onload: ->
-    CJ.log "Staring ClipJump"
+    CJ.log "Starting ClipJump"
     @application.context.scene.ambientLight = new pc.Color(0.2, 0.2, 0.2);
 
     #Load Map
-    @map = new CJ.Map
-    @map.load CJ.Level.get 0
+    @map = new CJ.Map CJ.Level.map_0
 
     @light = new CJ.Light {
       type: "directional",

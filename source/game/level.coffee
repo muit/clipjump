@@ -1,11 +1,10 @@
 class CJ.Level
-  @list = []
-  @add: (level)->
-    @list[level.id] = level
+  constructor: (@map, attrs)->
 
-  @get: (id)->
-    return @list[id]
+  load: ->
 
-  constructor: (@id)->
+  reset: ->
+    for entity in @map.entity._children
+      entity.destroy()
 
-  setBlocks: (@blocks)->
+  update: (dt)->
