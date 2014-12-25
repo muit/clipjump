@@ -5,7 +5,7 @@
 ****          @author Miguel Fernandez - muitxer - github.com/muit       ****
 **************************************************************************###
 
-window.CJ or= {};
+window.CJ or= {}
 CJ.log = (message)->
   console.log "ClipJump: "+message
 
@@ -25,6 +25,7 @@ class CJ.Game
   constructor: ->
 
   start: ->
+    @play = true
     CJ.instance = this
 
     @canvas = document.getElementById "canvas"
@@ -34,14 +35,16 @@ class CJ.Game
     @application.setCanvasFillMode(pc.fw.FillMode.FILL_WINDOW);
     @application.setCanvasResolution(pc.fw.ResolutionMode.AUTO);
     @application.start();
-    @onload()
-    @player.addScript "input_handler"
+
+    CJ.Assets.load (results)=>
+      @onload()
 
   editor: (@application)->
+    @play = false
     if !@application then throw new Error("Need an application object!")
     CJ.instance = this
-    @onload()
-
+    CJ.Assets.load (results)=>
+      @onload()
 
   onload: ->
     CJ.log "Staring ClipJump"
@@ -64,6 +67,8 @@ class CJ.Game
     #Add Player
     @player = new CJ.Player
     @player.translate 1,1,1
+    if @play
+      @player.addScript "input_handler"
 
     #Add Camera
     @camera = new CJ.Camera @player.entity
