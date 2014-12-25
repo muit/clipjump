@@ -18,6 +18,7 @@ var assets  = './public/game/assets';
 var libs  = './public/game/js';
 var source  = {
   game:   [
+    'source/game/libs/*.coffee',
     'source/game/models/unit.coffee',
     'source/game/*.coffee',
 

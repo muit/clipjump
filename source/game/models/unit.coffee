@@ -1,5 +1,7 @@
+window.CJ or= {}
 class CJ.Unit
   @app = undefined
+
   constructor: ->
     @entity or= new pc.fw.Entity
     @events or= {}
@@ -43,7 +45,6 @@ class CJ.Unit
 
   addScript: (name, attrs)->
     CJ.Script.add name, this, attrs
-
 
   on: (name, callback)->
     if typeof callback != "function"

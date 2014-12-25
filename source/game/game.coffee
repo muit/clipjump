@@ -62,7 +62,6 @@ class CJ.Game
     }
     @light.rotateLocal 45,30,0
     @light.translate 2,2,2
-
     #Add Player
     @player = new CJ.Player
     @player.translate 1,1,1
@@ -72,7 +71,6 @@ class CJ.Game
     #Add Camera
     @camera = new CJ.Camera @player.entity
     @camera.addScript "camera_movement", {player: @player}
-
     @application.on "update", @update
 
 
