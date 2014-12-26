@@ -95,8 +95,6 @@
   lerp = (a, b, t) ->
     (1 - t) * a + t * b
   module = window.Noise = (@num_iterations, @persistence, @freq, @low, @high, @seed)->
-
-
   module::get = (x,y)->
     maxAmp = 0
     amp = 1
