@@ -51,7 +51,7 @@ class CJ.Game
     @application.context.scene.ambientLight = new pc.Color(0.2, 0.2, 0.2);
 
     #Load Map
-    @map = new CJ.Map CJ.Level.map_0
+    @map = new CJ.Map CJ.Level.ProceduralLevel
 
     @light = new CJ.Light {
       type: "directional",
@@ -68,16 +68,21 @@ class CJ.Game
     if @play
       @player.addScript "input_handler"
 
+    @map.level.addPlayer @player
+
     #Add Camera
     @camera = new CJ.Camera @player.entity
     @camera.addScript "camera_movement", {player: @player}
-    @application.on "update", @update
+    self = this
+    @application.on "update", (dt)=>
+      self.update dt
 
 
   onunload: ->
 
   update: (dt)->
     CJ.Script.update dt
+    @map.update dt
 
   error: (message) ->
     throw new Error message

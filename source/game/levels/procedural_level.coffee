@@ -4,14 +4,21 @@ class CJ.Level.ProceduralLevel extends CJ.Level
     attrs or= {}
     @seed = attrs.seed or String.random()
     @ranges = []
+    @surface = []
+    @noise = new Noise 1, 1, 0.1, -2, 2, @seed
+
 
   initialize: ->
     Math.seedrandom @seed
-    @noise = new Noise 1, 1, 0.01, -10, 10, @seed
 
   update: (dt)->
+    self = this
     for range in @ranges
-      range.update dt, renderNewBlocks
+      range.update dt, (blocks)=>
+        self.renderNewBlocks blocks
+
+  addPlayer: (player)->
+    @addRange "SquareRange", {player: player}
 
   addRange: (type, attrs)->
     range_class = CJ.Level.ProceduralLevel[type]
@@ -21,8 +28,13 @@ class CJ.Level.ProceduralLevel extends CJ.Level
 
   renderNewBlocks: (blocks)->
     for block in blocks
-      if surface[block.x] == undefined || surface[block.x][block.y] == undefined
-        surface[block.x][block.y] = @noise.get block.x, block.y
+      if @surface[block.x] == undefined
+        @surface[block.x] = []
+
+      if @surface[block.x][block.y] == undefined
+        @surface[block.x][block.y] = cube = new CJ.Cube.Blue
+        cube.translate block.x, @noise.get(block.x, block.y), block.y
+        cube.addScript "spawn_animation"
 
 
 class CJ.Level.ProceduralLevel.CircularRange
@@ -32,7 +44,7 @@ class CJ.Level.ProceduralLevel.CircularRange
 
   update: (dt, callback)->
     p_position = @player.getPosition()
-    center = new Vector2 Math.round(p_position.x), Math.round(p_position.y)
+    center = new Vector2 Math.round(p_position.x), Math.round(p_position.z)
     if center.distance @center != 0
       @center = center
       callback obtainBlocks()
@@ -47,13 +59,16 @@ class CJ.Level.ProceduralLevel.SquareRange
   constructor: (attrs)->
     @player = attrs.player
     @range = attrs.range or 8
+    p_position = @player.getPosition()
+    @center = new Vector2 Math.round(p_position.x), Math.round(p_position.z)
 
   update: (dt, callback)->
     p_position = @player.getPosition()
-    center = new Vector2 Math.round(p_position.x), Math.round(p_position.y)
-    if center.distance @center != 0
+    center = new Vector2 Math.round(p_position.x), Math.round(p_position.z)
+
+    if (center.distance @center) != 0
       @center = center
-      callback obtainBlocks()
+      callback @obtainBlocks()
 
   obtainBlocks: ->
     blocks = []
