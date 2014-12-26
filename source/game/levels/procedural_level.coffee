@@ -7,6 +7,8 @@ class CJ.Level.ProceduralLevel extends CJ.Level
 
   initialize: ->
     Math.seedrandom @seed
+    Noise.seed Math.random()
+    value = noise.simplex2 x, y
 
 
   update: (dt)->

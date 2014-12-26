@@ -94,7 +94,28 @@
     t * t * t * (t * (t * 6 - 15) + 10)
   lerp = (a, b, t) ->
     (1 - t) * a + t * b
-  module = global.Noise = {}
+  module = window.Noise = (@num_iterations, @persistence, @freq, @low, @high, @seed)->
+
+
+  module::get = (x,y)->
+    maxAmp = 0
+    amp = 1
+    noise = 0
+    freq = @freq
+    Noise.seed @seed
+
+    i = 0
+    while i < @num_iterations
+      noise += Noise.simplex2(x * freq, y * freq) * amp
+      maxAmp += amp
+      amp *= @persistence
+      freq *= 2
+      ++i
+
+    noise /= maxAmp
+    noise = noise * (@high - @low) / 2 + (@high + @low) / 2
+
+    return noise
   Grad::dot2 = (x, y) ->
     @x * x + @y * y
 

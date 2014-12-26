@@ -1,5 +1,4 @@
 class CJ.Level.map_0 extends CJ.Level
-
   load: ->
     for z, plane of @blocks
       for x, line of plane
