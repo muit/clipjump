@@ -32,9 +32,9 @@ class CJ.Level.ProceduralLevel extends CJ.Level
         @surface[block.x] = []
 
       if @surface[block.x][block.y] == undefined
-        @surface[block.x][block.y] = cube = new CJ.Cube.Blue
+        @surface[block.x][block.y] = cube = new CJ.Cube.Blue undefined, {castShadows: false}
         cube.translate block.x, @noise.get(block.x, block.y), block.y
-        cube.addScript "spawn_animation"
+        #cube.addScript "spawn_animation"
 
 
 class CJ.Level.ProceduralLevel.CircularRange

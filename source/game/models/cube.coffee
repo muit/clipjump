@@ -1,11 +1,13 @@
 class CJ.Cube extends CJ.Unit
-  constructor: (@id = 1, context)->
+  constructor: (@id = 1, context, attrs)->
     super
+    attrs or= {}
+    console.log attrs
     type = CJ.Cube.Types.getById(id);
     CJ.instance.application.context.systems.model.addComponent @entity, {
       type: "box",
-      castShadows: true,
-      receiveShadows: true
+      castShadows: if attrs.castShadows == undefined then true else attrs.castShadows,
+      receiveShadows: if attrs.receiveShadows == undefined then true else attrs.receiveShadows,
     }
 
     CJ.instance.application.context.systems.collision.addComponent(@entity, {

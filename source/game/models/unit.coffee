@@ -46,6 +46,9 @@ class CJ.Unit
   addScript: (name, attrs)->
     CJ.Script.add name, this, attrs
 
+  removeScript: (name)->
+    CJ.Script.remove name, this
+
   on: (name, callback)->
     if typeof callback != "function"
       CJ.log "This event("+name+") is not a function."

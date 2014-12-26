@@ -17,5 +17,6 @@ CJ.Script.create "spawn_animation", ()=>
         @unit.translate 0, (if @height>0 then -amount else amount), 0
       else if @unit.getPosition().y != @y_0
         @unit.translate 0,-@unit.getPosition().y-@y_0,0
+        @unit.removeScript "spawn_animation"
 
   return SpawnAnimation
