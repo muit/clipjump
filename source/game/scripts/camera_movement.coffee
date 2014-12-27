@@ -36,7 +36,7 @@ CJ.Script.create "camera_movement", ()=>
       x = position.x
       z = position.z
       # Comprobate if the actual position is in the range
-      if (@obj_x-0.5 >= x || @obj_x+0.5 <= x) || (@obj_z-0.5 >= z || @obj_z+0.5 <= z)
+      if (@dir and @y_rads<@rads) or (!@dir and @y_rads>@rads)
         @y_rads = if @dir then @y_rads + @speed*dt else @y_rads - @speed*dt
         # New position
         x = @distance*Math.sin @y_rads

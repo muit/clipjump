@@ -2,7 +2,6 @@ class CJ.Cube extends CJ.Unit
   constructor: (@id = 1, context, attrs)->
     super
     attrs or= {}
-    console.log attrs
     type = CJ.Cube.Types.getById(id);
     CJ.instance.application.context.systems.model.addComponent @entity, {
       type: "box",
