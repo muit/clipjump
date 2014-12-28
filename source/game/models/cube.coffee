@@ -13,13 +13,18 @@ class CJ.Cube extends CJ.Unit
         type: "box",
         halfExtents: new pc.Vec3(0.5, 0.5, 0.5)
     });
+
+
+    material = new pc.scene.PhongMaterial
+    material.update()
+    @entity.model.material = material
+
     @addContext context
 
   setColor: (color)->
-    material = new pc.scene.PhongMaterial
-    material.diffuse = color
-    material.update()
-    @entity.model.material = material
+    @entity.model.material.diffuse = color
+    #@entity.model.material.diffuseMap = CJ.Assets.get("cube.jpg").resource
+    @entity.model.material.update();
 
 
   destroy: ->

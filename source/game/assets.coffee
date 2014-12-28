@@ -1,12 +1,15 @@
 window.CJ or= {}
 class CJ.Assets
-  @assets = {}
   @load: (callback)->
     requests = [
-      CJ.instance.application.context.assets.loadFromUrl("./assets/music/afrola.mp3", "audio")
+      CJ.instance.application.context.assets.loadFromUrl("./assets/music/afrola.mp3", pc.asset.ASSET_AUDIO),
+      CJ.instance.application.context.assets.loadFromUrl("./assets/textures/cube.jpg", pc.asset.ASSET_TEXTURE)
     ]
 
+    @assets = CJ.instance.application.context.assets
+
     pc.promise.all(requests).then (results)=>
-      for result in results
-        @assets[result.asset.name] = result.asset
       callback results
+
+  @get: (name)->
+    return CJ.instance.application.context.assets.find name
