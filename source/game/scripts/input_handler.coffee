@@ -46,4 +46,8 @@ CJ.Script.create "input_handler", ()=>
       @unit.translate x*@speed*dt, 0, z*@speed*dt
       @unit.entity.rigidbody.syncEntityToBody()
 
+    onStop: ->
+      @controller.detach()
+      @keyboard.detach()
+
   return InputHandler

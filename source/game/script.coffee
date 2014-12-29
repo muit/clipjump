@@ -22,6 +22,8 @@ class CJ.Script
     if !scriptData
       throw new Error "Current unit doesn't have the "+name+" script."
 
+    scriptData.script.onStop()
+
     delete unit.scripts[name]
     delete @scripts_loaded[scriptData.id]
 

@@ -24,7 +24,9 @@ class CJ.Level.ProceduralLevel extends CJ.Level
     range_class = CJ.Level.ProceduralLevel[type]
     if !range_class
       throw new Error "The range "+type+" does not exist."
-    @ranges.push new range_class attrs
+    range = new range_class attrs
+    @ranges.push range
+    @renderNewBlocks range.obtainBlocks()
 
   renderNewBlocks: (blocks)->
     for block in blocks
@@ -41,13 +43,15 @@ class CJ.Level.ProceduralLevel.CircularRange
   constructor: (attrs)->
     @player = attrs.player
     @range = attrs.range or 8
+    p_position = @player.getPosition()
+    @center = new Vector2 Math.round(p_position.x), Math.round(p_position.z)
 
   update: (dt, callback)->
     p_position = @player.getPosition()
     center = new Vector2 Math.round(p_position.x), Math.round(p_position.z)
-    if center.distance @center != 0
+    if (center.distance @center) != 0
       @center = center
-      callback obtainBlocks()
+      callback @obtainBlocks()
 
   obtainBlocks: ->
     blocks = [@center]

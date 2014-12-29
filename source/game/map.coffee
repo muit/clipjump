@@ -7,7 +7,7 @@ class CJ.Map extends CJ.Unit
 
   load: (level, attrs) ->
     @level = new level this, attrs
-    @level.load()
+    @level.initialize()
 
   reset: ->
     @level.reset()

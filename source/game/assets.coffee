@@ -11,5 +11,5 @@ class CJ.Assets
     pc.promise.all(requests).then (results)=>
       callback results
 
-  @get: (name)->
+  @find: (name)->
     return CJ.instance.application.context.assets.find name

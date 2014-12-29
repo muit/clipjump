@@ -44,5 +44,6 @@ CJ.Script.create "camera_movement", ()=>
         @camera.setLocalPosition x, @height, z
         @camera.lookAt @player
 
+    onStop: ->
 
   return CameraMovement
