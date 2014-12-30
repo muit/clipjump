@@ -41,14 +41,15 @@ class CJ.Game
 
   editor: (@application)->
     @play = false
-    if !@application then throw new Error("Need an application object!")
+    if !@application then throw new Error "Need an application object!"
     CJ.instance = this
     CJ.Assets.load (results)=>
       @onload()
 
   onload: ->
     CJ.log "Starting ClipJump"
-    @application.context.scene.ambientLight = new pc.Color(0.2, 0.2, 0.2);
+    @application.context.scene.ambientLight = new pc.Color 0.2, 0.2, 0.2
+    #@application.context.systems.rigidbody.setGravity 0, -9.8, 0
 
     #Load Map
     @map = new CJ.Map CJ.Level.ProceduralLevel

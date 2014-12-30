@@ -8,11 +8,16 @@ class CJ.Cube extends CJ.Unit
       castShadows: if attrs.castShadows == undefined then true else attrs.castShadows,
       receiveShadows: if attrs.receiveShadows == undefined then true else attrs.receiveShadows,
     }
+    CJ.instance.application.context.systems.rigidbody.addComponent @entity, attrs.rigidbody or {
+      type: "static",
+      friction: 0.5,
+      restitution: 0
+    }
 
-    CJ.instance.application.context.systems.collision.addComponent(@entity, {
-        type: "box",
-        halfExtents: new pc.Vec3(0.5, 0.5, 0.5)
-    });
+    CJ.instance.application.context.systems.collision.addComponent @entity, {
+      type: "box",
+      halfExtents: new pc.Vec3(0.5, 0.5, 0.5)
+    }
 
     @addContext context
 
@@ -70,3 +75,5 @@ class CJ.Cube.Types
   @add 4, "Player Box", "Player",  undefined
   @add 5, "Point Box",  "Point",   undefined
   @add 6, "End Box",    "End",     undefined
+  @add 7, "White Box",  "White",   undefined
+  @add 8, "Black Box",  "Black",   undefined
